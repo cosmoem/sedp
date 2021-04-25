@@ -1,0 +1,14 @@
+Most Exact Output of float Pi: 3.141
+Storage for float Pi: 4 bytes
+--> 1 byte exponent (incl sign), 3 bytes mantissa --> 24bit
+
+Most Exact Output of double Pi: 3.1415927
+Storage for float Pi: 8 bytes
+--> 12 bit exponent, 52bit mantissa
+
+Most Exact Output of long double Pi: 3.141592741012573
+Storage for float Pi: 16 bytes
+
+How many bits of mantissa in a floating-point number are necessary to encode the first 20 decimal digits of π?
+
+
