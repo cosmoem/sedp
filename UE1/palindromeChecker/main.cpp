@@ -31,7 +31,7 @@ int main(int argc, char* argv [])
 {
 
     // Input
-    std::ifstream cin("../palindrome_mini.txt");
+    std::ifstream cin("../palindrome_mini.txt"); // TODO change to command line program ?
     std::streambuf *cinbuf = std::cin.rdbuf();
     std::cin.rdbuf(cin.rdbuf());
 
