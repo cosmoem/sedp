@@ -3,13 +3,13 @@
 
 #include <string>
 
-// TODO: define PROVIDER_API for cross-platform use
+// define PROVIDER_API for cross-platform use
 #ifdef PROVIDER_API_EXPORTS
-  //  ...
-  #define PROVIDER_API // just a placeholder for valid compilation
+  // building the library
+  #define PROVIDER_API __attribute__((visibility("default")))
 #else
-  //  ...
-  #define PROVIDER_API // just a placeholder for valid compilation
+  // using the library
+  #define PROVIDER_API __attribute__((visibility("default")))
 #endif
 
 

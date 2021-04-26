@@ -2,10 +2,10 @@
 #include "provider.h"
 
 #include <sstream>
+#include <string>
 
-
-// TODO: pass PROVIDER_NAME using compiler options
-
+// pass PROVIDER_NAME using compiler options
+#define PROVIDER_NAME "Test Provider Name"
 
 namespace provider
 {
@@ -15,10 +15,16 @@ std::string providerInfo(const bool date)
 {
     auto stream = std::stringstream { };
 
-    // TODO: output provider name using the PROVIDER_NAME defined for compilation
+    // output provider name using the PROVIDER_NAME defined for compilation
+    stream << "Provider Name: " << PROVIDER_NAME;
 
-    // TODO: if date is true, output the date of compilation as well using predefined c++ macros
-    
+    // if date is true, output the date of compilation as well using predefined c++ macros
+    if(date) {
+        stream << ", Compilation Date: " __DATE__;
+    }
+
+    stream << std::endl;
+
     return stream.str();
 }
 
