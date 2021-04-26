@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cmath>
-#include <cstdlib>
 #include <random>
 #include <iomanip>
 
@@ -18,9 +17,12 @@ int monteCarlo_float() {
     int exactnessCounter = 0;
     float approximatedPi;
 
-    std::default_random_engine randomGenerator; // TODO use random engine ?
+    // TODO use random device or not ?
+    std::random_device r;
+    std::default_random_engine randomGenerator(r());
 	uniform_real_distribution<float> distribution(0.0f, 1.0f);
 
+    // TODO: siehe frage in mooodle --> so lassen oder average error für 10k iterations berechnen?
     while(exactnessCounter<10000) {
         float randomX = distribution(randomGenerator);
         float randomY = distribution(randomGenerator);
