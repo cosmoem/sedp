@@ -115,27 +115,32 @@ int main(int argc, char * argv[])
     // tries to get to a medium error of < 0.01% for the last 10000 iterations
 	cout << "Float Tries: " <<  monteCarlo_float() << endl;
 	cout << "Double Tries: " << monteCarlo_double() << endl;
-	cout << "Long Double Tries: " << monteCarlo_long_double() << endl << endl;
+	cout << "Long Double Tries: " << monteCarlo_long_double() << endl;
+
+    cout << "-----------------------------------------" << endl;
 
     // approximated pi values
-    cout << "Approximated float Pi: " << fixed << float_pi << endl;
+    cout << "Approximated float Pi: " << fixed << setprecision(8) << float_pi << endl;
     cout << "Approximated double Pi: " << double_pi << endl;
-    cout << "Approximated long double Pi: " << long_double_pi << endl << endl;
+    cout << "Approximated long double Pi: " << long_double_pi << endl;
+
+    cout << "-----------------------------------------" << endl;
 	
 	// most exact output for the three data types
-	cout << "(in-) Exact Output of float Pi: " << setprecision(16) << E_PI << endl;
+	cout << "(in-) Exact Output of float Pi: " << setprecision(65) << E_PI << endl;
+    cout << "Storage for float Pi: " << sizeof(E_PI) << " bytes" << endl << endl;
 
 	float fPi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062f;
-    cout << "Exact Output of float Pi: " << fPi << endl;
-	cout << "Storage for float Pi: " << sizeof(fPi) << " bytes" << endl;
+    cout << "Most Exact Output of float Pi: " << fPi << endl;
+	cout << "Storage for float Pi: " << sizeof(fPi) << " bytes" << endl << endl;
 
 	double dPi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062;
-    cout << "Exact Output of double Pi: " << dPi << endl;
-    cout << "Storage for float Pi: " << sizeof(dPi) << " bytes" << endl;
+    cout << "Most Exact Output of double Pi: " << dPi << endl;
+    cout << "Storage for double Pi: " << sizeof(dPi) << " bytes" << endl << endl;
 
     long double ldPi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062L;
-    cout << "Exact Output of long double Pi: " << ldPi << endl;
-    cout << "Storage for float Pi: " << sizeof(ldPi) << " bytes" << endl;
+    cout << "Most Exact Output of long double Pi: " << ldPi << endl;
+    cout << "Storage for long double Pi: " << sizeof(ldPi) << " bytes" << endl << endl;
 
     return 0;
 }

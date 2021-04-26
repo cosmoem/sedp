@@ -11,16 +11,22 @@
 
 TODO ????
 
-Most Exact Output of float Pi: 3.141
-Storage for float Pi: 4 bytes
---> 1 byte exponent (incl sign), 3 bytes mantissa --> 24bit
+Exact Pi: 3.1415926535897932384626433832795028841971693993751058209749445923078164062
 
-Most Exact Output of double Pi: 3.1415927
-Storage for float Pi: 8 bytes
---> 12 bit exponent, 52bit mantissa
+Most Exact Output of float Pi: 3.1415927410125732421875
+Storage for float Pi: 4 bytes = 32 bit
+1 bit sign, 8 bit exponent, 24 bit mantissa (23 bit stored because hidden bit)
+--> 22 decimal digits after the comma are stored, but accurately only for up to 6 decimal digits
 
-Most Exact Output of long double Pi: 3.141592741012573
-Storage for float Pi: 16 bytes
+Most Exact Output of double Pi: 3.141592653589793115997963468544185161590576171875
+Storage for float Pi: 8 bytes = 64 bit
+1 bit sign, 11 bit exponent, 52 bit mantissa
+--> 48 decimal digits after the comma are stored, but accurately only for up to 15 decimal digits
+
+Most Exact Output of long double Pi: 3.14159265358979323851280895940618620443274267017841339111328125
+Storage for float Pi: 16 bytes = 128 bit
+1 bit sign, 15 bit exponent, 112 bit mantissa
+--> 62 decimal digits after the comma are stored, but accurately only for up to 18 decimal digits
 
 3) How many bits of mantissa in a floating-point number are necessary to encode the first 20
    decimal digits of π?
