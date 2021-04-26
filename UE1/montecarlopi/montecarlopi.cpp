@@ -10,7 +10,7 @@ using namespace std;
 
 float float_pi = 0.0f;
 double double_pi = 0.0;
-long double long_double_pi = 0.0;
+long double long_double_pi = 0.0L;
 
 int monteCarlo_float() {
 	int tries = 0;
@@ -83,21 +83,21 @@ int monteCarlo_long_double() {
     long double approximatedPi;
 
     std::default_random_engine randomGenerator; // TODO use random engine ?
-    uniform_real_distribution<long double> distribution(0.0, 1.0);
+    uniform_real_distribution<long double> distribution(0.0L, 1.0L);
 
     while(exactnessCounter<10000) {
         long double randomX = distribution(randomGenerator);
         long double randomY = distribution(randomGenerator);
         long double distanceToCenter = sqrt(randomX*randomX + randomY*randomY);
 
-        if(distanceToCenter <= 1.0) {
+        if(distanceToCenter <= 1.0L) {
             insideCircleCounter++;
         }
         tries++;
 
-        approximatedPi = ((long double)insideCircleCounter/(long double)tries)*4.0;
+        approximatedPi = ((long double)insideCircleCounter/(long double)tries)*4.0L;
 
-        if(approximatedPi >= 3.1413 && approximatedPi <= 3.1419) {
+        if(approximatedPi >= 3.1413L && approximatedPi <= 3.1419L) {
             exactnessCounter++;
         }
         else {
@@ -127,11 +127,11 @@ int main(int argc, char * argv[])
     cout << "Exact Output of float Pi: " << fPi << endl;
 	cout << "Storage for float Pi: " << sizeof(fPi) << " bytes" << endl;
 
-	double dPi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062f;
+	double dPi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062;
     cout << "Exact Output of double Pi: " << dPi << endl;
     cout << "Storage for float Pi: " << sizeof(dPi) << " bytes" << endl;
 
-    long double ldPi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062f;
+    long double ldPi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062L;
     cout << "Exact Output of long double Pi: " << ldPi << endl;
     cout << "Storage for float Pi: " << sizeof(ldPi) << " bytes" << endl;
 

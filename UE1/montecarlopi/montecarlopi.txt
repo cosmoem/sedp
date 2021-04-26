@@ -1,3 +1,16 @@
+1) How many iterations does your implementation need to get a medium error of < 0.01% for
+   the last 10000 iterations (means the result is within [3.1413, 3.1419])?
+
+- Float Tries: 12914443
+- Double Tries: 1843242
+- Long Double Tries: 299901
+
+
+2) List the most exact π representation using the C++ data-types float, double, and long
+   double along with their storage in bytes for your system
+
+TODO ????
+
 Most Exact Output of float Pi: 3.141
 Storage for float Pi: 4 bytes
 --> 1 byte exponent (incl sign), 3 bytes mantissa --> 24bit
@@ -9,6 +22,8 @@ Storage for float Pi: 8 bytes
 Most Exact Output of long double Pi: 3.141592741012573
 Storage for float Pi: 16 bytes
 
-How many bits of mantissa in a floating-point number are necessary to encode the first 20 decimal digits of π?
+3) How many bits of mantissa in a floating-point number are necessary to encode the first 20
+   decimal digits of π?
 
+TODO
 
