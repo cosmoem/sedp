@@ -7,9 +7,9 @@
 
 // Function to check if a string is a palindrome
 bool isPalindrome(std::string word){
-    int wordSize= word.size();
+    int wordSize= (int)word.size();
     std::for_each(word.begin(), word.end(), [](char & c){
-        c = ::tolower(c);
+        c = (char)::tolower(c);
     });
     if (wordSize%2==0) {
         std::string partOne = word.substr(0, wordSize / 2 );
@@ -25,7 +25,8 @@ bool isPalindrome(std::string word){
     }
 }
 
-// run with: g++ -std=c++14 -o palindrometest main.cpp && time ./palindrometest measure < palindromes_small.txt
+// run with time measurement: g++ -std=c++14 -o palindrometest palindrome-checker.cpp && time ./palindrometest measure < [FILE NAME]
+// run without time measurement: g++ -std=c++14 -o palindrometest palindrome-checker.cpp && ./palindrometest < [FILE NAME]
 int main(int argc, char* argv [])
 {
 
@@ -43,6 +44,9 @@ int main(int argc, char* argv [])
         line.reserve(size);
     }
 
+    // Start time measurement
+    const auto start = std::chrono::high_resolution_clock::now();
+
     // Check input for palindromity
     std::vector<std::string> palindromeVector;
     std::vector<std::string> nonPalindromeVector;
@@ -55,12 +59,11 @@ int main(int argc, char* argv [])
         }
     }
 
-    const auto start = std::chrono::high_resolution_clock::now();
-
     // Overwrite lines vector so that it's sorted
     std::copy(palindromeVector.begin(),palindromeVector.end(), lines.begin());
-    std::copy(nonPalindromeVector.begin(), nonPalindromeVector.end(), lines.begin() + palindromeVector.size());
+    std::copy(nonPalindromeVector.begin(), nonPalindromeVector.end(), lines.begin() + (long)palindromeVector.size());
 
+    // Stop time measurement
     const auto end = std::chrono::high_resolution_clock::now();
     const auto duration = end - start;
     std::cout << std::dec << std::chrono::duration_cast<std::chrono::milliseconds>(duration).count() << std::endl;
