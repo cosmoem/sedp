@@ -7,23 +7,20 @@
 
 using namespace std;
 
-float float_pi = 0.0f;
-double double_pi = 0.0;
-long double long_double_pi = 0.0L;
+const int PRECISION_THRESHOLD = 10000;
 
 int monteCarlo_float() {
 	int tries = 0;
     int insideCircleCounter = 0;
-    int exactnessCounter = 0;
     float approximatedPi;
 
-    // TODO use random device or not ?
     std::random_device r;
     std::default_random_engine randomGenerator(r());
 	uniform_real_distribution<float> distribution(0.0f, 1.0f);
 
-    // TODO: siehe frage in mooodle --> average error for last 10k iterations!!
-    while(exactnessCounter<10000) {
+    vector<float> piVector(100000);
+    bool notYetDone = true;
+    while(notYetDone) {
         float randomX = distribution(randomGenerator);
         float randomY = distribution(randomGenerator);
         float distanceToCenter = sqrt(randomX*randomX + randomY*randomY);
@@ -34,28 +31,35 @@ int monteCarlo_float() {
         tries++;
 
         approximatedPi = ((float)insideCircleCounter/(float)tries)*4.0f;
+        auto iterator = piVector.end();
+        piVector.insert(iterator, approximatedPi);
 
-        if(approximatedPi >= 3.1413f && approximatedPi <= 3.1419f) {
-            exactnessCounter++;
-        }
-        else {
-            exactnessCounter = 0;
+        if(tries >= PRECISION_THRESHOLD) {
+            float sum = 0.0f;
+            for (int i = (int)piVector.size() - PRECISION_THRESHOLD; i < piVector.size(); i++) {
+                sum+=piVector.at(i);
+            }
+            float averagePi = sum / (float)PRECISION_THRESHOLD;
+            if(averagePi >= 3.1413f && averagePi <= 3.1419f) {
+                notYetDone = false;
+            }
         }
     }
-    float_pi = approximatedPi;
 	return tries;
 }
 
 int monteCarlo_double() {
     int tries = 0;
     int insideCircleCounter = 0;
-    int exactnessCounter = 0;
     double approximatedPi;
 
-    std::default_random_engine randomGenerator; // TODO use random engine ?
+    std::random_device r;
+    std::default_random_engine randomGenerator(r());
     uniform_real_distribution<double> distribution(0.0, 1.0);
 
-    while(exactnessCounter<10000) {
+    vector<double> piVector(100000);
+    bool notYetDone = true;
+    while(notYetDone) {
         double randomX = distribution(randomGenerator);
         double randomY = distribution(randomGenerator);
         double distanceToCenter = sqrt(randomX*randomX + randomY*randomY);
@@ -66,28 +70,35 @@ int monteCarlo_double() {
         tries++;
 
         approximatedPi = ((double)insideCircleCounter/(double)tries)*4.0;
+        auto iterator = piVector.end();
+        piVector.insert(iterator, approximatedPi);
 
-        if(approximatedPi >= 3.1413 && approximatedPi <= 3.1419) {
-            exactnessCounter++;
-        }
-        else {
-            exactnessCounter = 0;
+        if(tries >= PRECISION_THRESHOLD) {
+            double sum = 0.0;
+            for (int i = (int)piVector.size() - PRECISION_THRESHOLD; i < piVector.size(); i++) {
+                sum+=piVector.at(i);
+            }
+            double averagePi = sum / (double)PRECISION_THRESHOLD;
+            if(averagePi >= 3.1413 && averagePi <= 3.1419) {
+                notYetDone = false;
+            }
         }
     }
-    double_pi = approximatedPi;
     return tries;
 }
 
 int monteCarlo_long_double() {
     int tries = 0;
     int insideCircleCounter = 0;
-    int exactnessCounter = 0;
     long double approximatedPi;
 
-    std::default_random_engine randomGenerator; // TODO use random engine ?
+    std::random_device r;
+    std::default_random_engine randomGenerator(r());
     uniform_real_distribution<long double> distribution(0.0L, 1.0L);
 
-    while(exactnessCounter<10000) {
+    vector<long double> piVector(100000);
+    bool notYetDone = true;
+    while(notYetDone) {
         long double randomX = distribution(randomGenerator);
         long double randomY = distribution(randomGenerator);
         long double distanceToCenter = sqrt(randomX*randomX + randomY*randomY);
@@ -98,36 +109,33 @@ int monteCarlo_long_double() {
         tries++;
 
         approximatedPi = ((long double)insideCircleCounter/(long double)tries)*4.0L;
+        auto iterator = piVector.end();
+        piVector.insert(iterator, approximatedPi);
 
-        if(approximatedPi >= 3.1413L && approximatedPi <= 3.1419L) {
-            exactnessCounter++;
-        }
-        else {
-            exactnessCounter = 0;
+        if(tries >= PRECISION_THRESHOLD) {
+            long double sum = 0.0L;
+            for (int i = (int)piVector.size() - PRECISION_THRESHOLD; i < piVector.size(); i++) {
+                sum+=piVector.at(i);
+            }
+            long double averagePi = sum / (long double)PRECISION_THRESHOLD;
+            if(averagePi >= 3.1413L && averagePi <= 3.141L) {
+                notYetDone = false;
+            }
         }
     }
-    long_double_pi = approximatedPi;
-    return tries;
 }
 
 int main(int argc, char * argv[])
 {
     // tries to get to a medium error of < 0.01% for the last 10000 iterations
-	cout << "Float Tries: " <<  monteCarlo_float() << endl;
+    cout << "Float Tries: " <<  monteCarlo_float() << endl;
 	cout << "Double Tries: " << monteCarlo_double() << endl;
-	cout << "Long Double Tries: " << monteCarlo_long_double() << endl;
-
-    cout << "-----------------------------------------" << endl;
-
-    // approximated pi values TODO delete ?
-    cout << "Approximated float Pi: " << fixed << setprecision(8) << float_pi << endl;
-    cout << "Approximated double Pi: " << double_pi << endl;
-    cout << "Approximated long double Pi: " << long_double_pi << endl;
+	//cout << "Long Double Tries: " << monteCarlo_long_double() << endl;
 
     cout << "-----------------------------------------" << endl;
 	
 	// most exact output for the three data types
-	cout << "(in-) Exact Output of float Pi: " << setprecision(65) << E_PI << endl;
+	cout << "(in-) Exact Output of float Pi: " << fixed << setprecision(65) << E_PI << endl;
     cout << "Storage for float Pi: " << sizeof(E_PI) << " bytes" << endl << endl;
 
 	float fPi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062f;
