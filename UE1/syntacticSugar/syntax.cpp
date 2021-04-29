@@ -15,6 +15,7 @@ struct Currency
     friend Currency operator&&(Currency c1, Currency c2) {
         return Currency { c1.cents + c2.cents };
     }
+
     friend bool operator==(Currency c1, int c2) {
         return c1.cents == c2;
     }
@@ -100,7 +101,7 @@ public:
 struct Converter
 {
     float m_value;
-    
+
     operator float() const { return float(m_value); }
     operator Object() const { return Object{ m_value, true }; }
 };
@@ -108,10 +109,13 @@ struct Converter
 struct Generator
 {
     static size_t objectInstanceCount;
-    
-    Object operator()()
+
+    // return converter instead of object
+    // --> implicit conversion happens via conversion functions defined in converter struct
+    Converter operator()()
     {
-        return Object(rand(), true);
+        auto value = (float) rand();
+        return Converter {value};
     }
 };
 
@@ -119,7 +123,7 @@ struct Matrix
 {
     Matrix()
     {
-        for (size_t i = 0; sizeof(m_f); ++i)
+        for (size_t i = 0; i < sizeof(m_f); ++i)
         {
             m_f[i++] = 0.0f;
         }
@@ -127,7 +131,7 @@ struct Matrix
     
     Matrix(std::initializer_list<float> initializer)
     {
-        assert(initializer.size() == sizeof(m_f));
+        assert(initializer.size() == (sizeof(m_f)/sizeof(m_f[0]))); // sizeof of an array returns total size in bytes --> divide by size of a single element
         
         size_t i = 0;
         for (auto value : initializer)
@@ -135,7 +139,26 @@ struct Matrix
             m_f[i++] = value;
         }
     }
-    
+
+    bool operator==(Matrix m1) {
+        // when comparing two arrays with == the pointers are compared --> no equality, instead compare each element
+        for(int i=0; i< sizeof(m_f)/sizeof(m_f[0]); i++) {
+            if(m1.m_f[i] != this->m_f[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool operator!=(Matrix m1) {
+        for(int i=0; i< sizeof(m_f)/sizeof(m_f[0]); i++) {
+            if(m1.m_f[i] != this->m_f[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 protected:
     float m_f[16];
 };
@@ -203,12 +226,13 @@ void accounting()
 }
 
 void matrix()
-{/*
+{
     Matrix m;
     
     Matrix m1 = { 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0 };
     assert(m == m1);
-    
+    /*
+
     m[m.y == m.x] = 1.0f;
     
     Matrix m2 = { 1, 0, 0, 0,   0, 1, 0, 0,   0, 0, 1, 0,   0, 0, 0, 1 };
@@ -242,7 +266,7 @@ void matrix()
 
 int main(int argc, char * argv[])
 {
-    //generator();
+    generator();
     accounting();
     matrix();
     
