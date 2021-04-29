@@ -1,19 +1,25 @@
+system: macos big sur 11.2.3
+
 1) building the library:
 
-compilation:
-g++ -std=c++14 -D PROVIDER_API_EXPORTS -D SYSTEM_LINUX -o provider.o -I./ -c ./provider.cpp
+1.1) compilation:
+
+option 1: when passing PROVIDER_NAME inside code via #define
+g++ -std=c++14 -D PROVIDER_API_EXPORTS -o provider.o -I./ -c ./provider.cpp
+
+option 2: when passing PROVIDER_NAME via command line
+g++ -std=c++14 -D PROVIDER_API_EXPORTS -D PROVIDER_NAME="\"test\"" -o provider.o -I./ -c ./provider.cpp
 --> returns provider.o
 
-linking:
-g++ -std=c++14 -shared -fPIC -o provider.dylib ./provider.o -L./
---> returns providerlib.dylib
+1.2) linking:
+g++ -std=c++14 -dynamiclib -o provider ./provider.o -L./
+--> returns providerlib
 
 2) testing:
 
-compilation:
-g++ -std=c++14 -I./ -c providerlibtest.cpp
---> returns providerlibtest.o
+2.1) compilation + linking:
+g++ -std=c++14 -Wl,-rpath,'./' -o providertest providerlibtest.cpp -L./ provider
+--> returns providertest
 
-linking executable:
- g++ -std=c++14 -Wl,-rpath='./' -o providerlibtest -L./ providerlibtest.o -l providerlib
---> returns test
+2.2) execution:
+./providertest
