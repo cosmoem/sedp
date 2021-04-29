@@ -1,11 +1,9 @@
 #include <iostream>
-#include <cassert>
 #include <string>
 #include <vector>
 #include <functional>
 #include <algorithm>
 #include <chrono>
-#include <fstream>
 
 // Function to check if a string is a palindrome
 bool isPalindrome(std::string word){
@@ -27,15 +25,11 @@ bool isPalindrome(std::string word){
     }
 }
 
+// run with: g++ -std=c++14 -o palindrometest main.cpp && time ./palindrometest measure < palindromes_small.txt
 int main(int argc, char* argv [])
 {
 
-    // Input
-    std::ifstream cin("../palindrome_mini.txt"); // TODO change to command line program ?
-    std::streambuf *cinbuf = std::cin.rdbuf();
-    std::cin.rdbuf(cin.rdbuf());
-
-    std::string line;
+    auto line = std::string();
     std::vector<std::string> lines;
     while (std::getline(std::cin, line))
     {
@@ -61,9 +55,15 @@ int main(int argc, char* argv [])
         }
     }
 
+    const auto start = std::chrono::high_resolution_clock::now();
+
     // Overwrite lines vector so that it's sorted
     std::copy(palindromeVector.begin(),palindromeVector.end(), lines.begin());
     std::copy(nonPalindromeVector.begin(), nonPalindromeVector.end(), lines.begin() + palindromeVector.size());
+
+    const auto end = std::chrono::high_resolution_clock::now();
+    const auto duration = end - start;
+    std::cout << std::dec << std::chrono::duration_cast<std::chrono::milliseconds>(duration).count() << std::endl;
 
     // Output
     std::cout << "Sorted by palindromity" << std::endl << std::endl;
