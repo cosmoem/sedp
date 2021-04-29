@@ -1,1 +1,21 @@
-# TODO
+1) building the library:
+
+compilation:
+g++ -std=c++14 -D PROVIDER_API_EXPORTS  -I./ -c ./provider.cpp
+--> returns provider.o
+
+linking:
+g++ -std=c++14 -shared -fPIC -o providerlib.lib ./provider.o -L./
+--> returns providerlib.dylib
+
+2) testing:
+
+compilation:
+g++ -std=c++14 -I./ -c providerlibtest.cpp
+--> returns providerlibtest.o
+
+ -Wl,-rpath='$ORIGIN'
+
+linking executable:
+g++ -std=c++14 -o test -Wl,-rpath="$ORIGIN" -L./ providerlibtest.o -l providerlib
+--> returns test

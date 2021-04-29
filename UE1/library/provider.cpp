@@ -5,7 +5,7 @@
 #include <string>
 
 // pass PROVIDER_NAME using compiler options
-#define PROVIDER_NAME "Test Provider Name"
+#define PROVIDER_NAME "Test Provider Name" // TODO das ist wahrscheinlich falsch.. aufgagbe sagt "to be passed as compile-time arguments"
 
 namespace provider
 {
