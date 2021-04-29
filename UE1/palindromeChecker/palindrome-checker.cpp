@@ -25,12 +25,13 @@ bool isPalindrome(std::string word){
     }
 }
 
-// run with time measurement: g++ -std=c++14 -o palindrometest palindrome-checker.cpp && time ./palindrometest measure < [FILE NAME]
-// run without time measurement: g++ -std=c++14 -o palindrometest palindrome-checker.cpp && ./palindrometest < [FILE NAME]
+// run with time measurement: g++ -std=c++14 -o palindrome-checker palindrome-checker.cpp && time ./palindrome-checker measure < [FILE NAME]
+// run without time measurement: g++ -std=c++14 -o palindrome-checker palindrome-checker.cpp && ./palindrome-checker < [FILE NAME]
 int main(int argc, char* argv [])
 {
 
-    auto line = std::string();
+    // Input
+    auto line = std::string("");
     std::vector<std::string> lines;
     while (std::getline(std::cin, line))
     {
