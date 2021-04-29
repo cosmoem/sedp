@@ -9,29 +9,36 @@
 2) List the most exact π representation using the C++ data-types float, double, and long
    double along with their storage in bytes for your system
 
-TODO ????
-
 Exact Pi: 3.1415926535897932384626433832795028841971693993751058209749445923078164062
 
 Most Exact Output of float Pi: 3.1415927410125732421875
 Storage for float Pi: 4 bytes = 32 bit
 1 bit sign, 8 bit exponent, 24 bit mantissa (23 bit stored because hidden bit)
---> 23 digits are stored, but accurately only for up to 7 digits
+--> 23 digits are stored, precision: up to 7 digits
 
 Most Exact Output of double Pi: 3.141592653589793115997963468544185161590576171875
-Storage for float Pi: 8 bytes = 64 bit
+Storage for double Pi: 8 bytes = 64 bit
 1 bit sign, 11 bit exponent, 52 bit mantissa
---> 49 digits are stored, but accurately only for up to 16 digits
+--> 49 digits are stored, precision: up to 16 digits
 
 Most Exact Output of long double Pi: 3.14159265358979323851280895940618620443274267017841339111328125
-Storage for float Pi: 16 bytes = 128 bit
-1 bit sign, 15 bit exponent, 112 bit mantissa
---> 62 digits are stored, but accurately only for up to 18 digits
+Storage for long double Pi: 16 bytes = 128 bit
+
+expected: 1 bit sign, 15 bit exponent, 112 bit mantissa
+--> precision: up to 36 digits
+
+reality:
+10 bytes = 80 bit, 1 bit sign, 15 bit exponent, 64 bit mantissa
+--> 62 digits are stored, precision: up to 20 digits
+--> apparently a 10 bytes format is used "under the hood" and the compiler just allocates 16 bytes for it because of alignment
+(source: https://stackoverflow.com/questions/17382879/sizeof-long-double-and-precision-not-matching)
 
 3) How many bits of mantissa in a floating-point number are necessary to encode the first 20
    decimal digits of π?
 
-TODO ????
+formula to calculate precision: log10(2^mantissa_bits) = number of precise digits
 
---> float (32bit) with 24 bit mantissa would be enough to store 20 digits of pi,
-    but not all of them would be stored accurately (only the first 7 digits are accurate)
+log10(2^mantissa_bits) = 20 digits
+mantissa = 64 bit
+
+--> the first 20 decimal digits of pi can be accurately encoded with a format that has a 64 bit mantissa.

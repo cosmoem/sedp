@@ -22,7 +22,7 @@ int monteCarlo_float() {
     std::default_random_engine randomGenerator(r());
 	uniform_real_distribution<float> distribution(0.0f, 1.0f);
 
-    // TODO: siehe frage in mooodle --> so lassen oder average error für 10k iterations berechnen?
+    // TODO: siehe frage in mooodle --> average error for last 10k iterations!!
     while(exactnessCounter<10000) {
         float randomX = distribution(randomGenerator);
         float randomY = distribution(randomGenerator);
@@ -119,7 +119,7 @@ int main(int argc, char * argv[])
 
     cout << "-----------------------------------------" << endl;
 
-    // approximated pi values
+    // approximated pi values TODO delete ?
     cout << "Approximated float Pi: " << fixed << setprecision(8) << float_pi << endl;
     cout << "Approximated double Pi: " << double_pi << endl;
     cout << "Approximated long double Pi: " << long_double_pi << endl;
