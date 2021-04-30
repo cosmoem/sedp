@@ -8,23 +8,28 @@
 // TODO: Start of solution
 // You may edit / add anything from here to satisfy the interfaces and behaviors expected by the execution code below
 
+// CURRENCY
 struct Currency
 {
     unsigned long long int cents;
 
+    // overload "and" with sum
     friend Currency operator&&(Currency c1, Currency c2) {
         return Currency { c1.cents + c2.cents };
     }
 
+    // define equality for currency and cents
     friend bool operator==(Currency c1, int c2) {
         return c1.cents == c2;
     }
 
+    // overload , with sum
     friend Currency operator,(Currency c1, Currency c2) {
         return Currency {c1.cents + c2.cents};
     };
 };
 
+// define user-defined literals
 Currency operator "" _euro(unsigned long long int cents) {
     return Currency {cents*100};
 }
@@ -49,34 +54,37 @@ struct Account
 {
     Currency balance = 0_euro;
 
-    explicit Account(const Currency & balance)
-    : balance(balance)
-    {
-    }
+    explicit Account(const Currency & balance) : balance(balance) { }
 
+    // overload >> withdrawing from account a
     friend unsigned long long int operator >> (Account & a1, Currency c) {
         a1.balance.cents -= c.cents;
         return c.cents;
     }
 
+    // overload >> as depositing into account a
     friend void operator >> (unsigned long long int c, Account & a1) {
         a1.balance.cents += c;
     };
 
+    // overload << as depositing into account a
     friend unsigned long long int operator << (Account & a1, Currency c) {
         a1.balance.cents += c.cents;
         return c.cents;
     }
 
+    // overload << as withdrawing from account a
     friend void operator << (unsigned long long int c, Account & a1) {
         a1.balance.cents -= c;
     };
 
+    // overload << ostream to output account balance for account a
     friend std::ostream& operator<<(std::ostream& os, Account a1) {
         os << std::to_string(a1.balance.cents);
         return os;
     }
 
+    // overload << stringstream to output detailed balance for account a
     friend std::stringstream & operator<<(std::stringstream & os, Account a1) {
         unsigned long long int euroValue = a1.balance.cents/100;
         unsigned long long int centValue = a1.balance.cents - euroValue*100;
@@ -86,12 +94,14 @@ struct Account
 
 };
 
+// GENERATOR
 struct Object
 {
 public:
     Object(float value, bool count);
     ~Object();
-    
+
+    // conversion function for implicit type conversion
     operator float() const { return m_value; }
     
     float m_value;
@@ -101,6 +111,7 @@ struct Converter
 {
     float m_value;
 
+    // conversion functions for implicit type conversion
     operator float() const { return float(m_value); }
     operator Object() const { return Object{ m_value, true }; }
 };
@@ -110,7 +121,7 @@ struct Generator
     static size_t objectInstanceCount;
 
     // return converter instead of object
-    // --> implicit conversion happens via conversion functions defined in converter struct
+    // --> implicit conversion happens via conversion functions defined in converter and object struct
     Converter operator()()
     {
         auto value = (float) rand();
@@ -118,6 +129,7 @@ struct Generator
     }
 };
 
+// MATRIX
 struct Matrix
 {
 
