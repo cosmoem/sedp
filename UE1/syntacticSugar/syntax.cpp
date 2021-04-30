@@ -135,7 +135,7 @@ struct Matrix
     float m_f[16];
     static const int SIZE = sizeof(m_f)/sizeof(m_f[0]);
 
-    // structs to indirectly save the conditions "m.x == m.y", "m.x < m.y", "m.x > m.y"
+    // structs to indirectly save the conditions "m.column == m.row", "m.column < m.row", "m.column > m.row"
     struct ConditionX {
         int x;
     };
@@ -145,22 +145,22 @@ struct Matrix
     };
 
     struct Condition {
-        int x, y;
+        int column, row;
     };
 
     // struct to represent cells of the matrix that should be modified on condition
     struct Cells {
         Matrix& m;
         // array used to store indices at which the condition for assignment was met
-        int indices[SIZE] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}; // default values are < 0 to check later on if they were set or not
+        int indices[SIZE] = {-100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100}; // default values are < 0 to check later on if they were set or not
 
         // constructor
         Cells(Matrix &m) : m(m) {};
 
         // overload = to assign a float value to all cells in indices array that meet the condition for assignment
         Matrix& operator=(float value) {
-            for (int i=0; i<16; i++) {
-                if(this->indices[i] >= 0) {
+            for (int i=0; i<SIZE; i++) {
+                if(this->indices[i] > -100) {
                     m.m_f[indices[i]] = value;
                 }
             }
@@ -168,7 +168,7 @@ struct Matrix
         }
     };
 
-    // define x and y to be able to access m.x and m.y
+    // define column and row to be able to access m.column and m.row
     ConditionX x;
     ConditionY y;
 
@@ -180,8 +180,8 @@ struct Matrix
             m_f[i] = 0.0f;
         }
         // default values are < 0 to check later on if they were set or not
-        x = ConditionX {-1};
-        y = ConditionY {-1};
+        x = ConditionX {-100};
+        y = ConditionY {-100};
     }
 
     // Constructor 2: from initializer list
@@ -195,61 +195,83 @@ struct Matrix
             i++;
         }
         // default values are < 0 to check later on if they were set or not
-        x = ConditionX {-1};
-        y = ConditionY {-1};
+        x = ConditionX {-100};
+        y = ConditionY {-100};
     }
 
     // overload ==, <, and > to describe different possible conditions
     friend Condition operator==(ConditionY y, ConditionX x) {
-        return Condition {0,0};
+        return Condition {-1,-1};
     }
 
     friend Condition operator<(ConditionY y, ConditionX x) {
-        return Condition {1,0};
+        return Condition {-1,-2};
     }
 
     friend Condition operator>(ConditionY y, ConditionX x) {
-        return Condition {0,1};
+        return Condition {-2,-1};
     }
+
+    friend Condition operator,(ConditionY y, ConditionX x) {
+        return Condition {x.x, y.y};
+    };
+
+    friend Condition operator,(ConditionX x, ConditionY y) {
+        return Condition {x.x, y.y};
+    };
+
+    friend Condition operator==(ConditionY y, int x) {
+        return Condition {x, -1};
+    };
 
     // overload subscription operator to resolve the condition
     // --> returns Cells object which contains the indices at which the condition was met
     Cells operator[](Condition a) {
         Cells cells = Cells {*this}; // matrix passed by reference so that it's modifiable
         int counter = 0;
-        // == condition, checks if > 0 to exclude default values
-        if(a.y == a.x && a.y >= 0) {
-            for (size_t i = 0; i < SIZE; i++)
-            {
-                int x_pos = (i / 4);
-                int y_pos = i - x_pos*4;
-                if(x_pos==y_pos) {
+        // if values are > 0 they are indices and not a general condition
+        if (a.row >= 0 && a.column >= 0){
+            int index = a.row * 4 + a.column;
+            cells.indices[0] = index;
+        }
+        // checks if column > 0 to see if it's index but a.row < 0 and > -100 to see if it's condition
+        else if(a.column >= 0 && a.row < 0 && a.row > -100) {
+            for (size_t i = 0; i < SIZE; i++) {
+                int row_index = (i / 4);
+                if (row_index == a.column) {
                     cells.indices[counter] = i;
                     counter++;
                 }
             }
         }
-        // < condition
-        else if(a.y < a.x) {
-            for (size_t i = 0; i < SIZE; i++)
-            {
-                int x_pos = (i / 4);
-                int y_pos = i - x_pos*4;
-                if(x_pos<y_pos) {
-                    cells.indices[counter] = i;
-                    counter++;
+        // checks if > -100 to exclude default values, general conditions:
+        else if(a.row > -100 && a.column > -100) {
+            if (a.row == a.column) {
+                for (size_t i = 0; i < SIZE; i++) {
+                    int row_index = (i / 4);
+                    int column_index = i - row_index * 4;
+                    if (row_index == column_index) {
+                        cells.indices[counter] = i;
+                        counter++;
+                    }
                 }
-            }
-        }
-        // > condition
-        else if(a.y > a.x && a.y){
-            for (size_t i = 0; i < SIZE; i++)
-            {
-                int x_pos = (i / 4);
-                int y_pos = i - x_pos*4;
-                if(x_pos>y_pos) {
-                    cells.indices[counter] = i;
-                    counter++;
+            } else if (a.row < a.column) {
+                for (size_t i = 0; i < SIZE; i++) {
+                    int row_index = (i / 4);
+                    int column_index = i - row_index * 4;
+                    if (row_index < column_index) {
+                        cells.indices[counter] = i;
+                        counter++;
+                    }
+                }
+            } else if (a.row > a.column) {
+                for (size_t i = 0; i < SIZE; i++) {
+                    int row_index = (i / 4);
+                    int column_index = i - row_index * 4;
+                    if (row_index > column_index) {
+                        cells.indices[counter] = i;
+                        counter++;
+                    }
                 }
             }
         }
@@ -277,6 +299,15 @@ struct Matrix
         return false;
     }
 };
+
+// define user-defined literals
+Matrix::ConditionX operator "" _x(unsigned long long int value) {
+    return Matrix::ConditionX {static_cast<int>(value)};
+}
+
+Matrix::ConditionY operator "" _y(unsigned long long int value) {
+    return Matrix::ConditionY {static_cast<int>(value)};
+}
 
 // End of solution
 // Do not edit the source code below!
@@ -361,21 +392,21 @@ void matrix()
     
     Matrix m4 = { 1, 4, 4, 4,   3, 1, 4, 4,   3, 3, 1, 4,   3, 3, 3, 1 };
     assert(m == m4);
-    /*
+
     m[3_y, 2_x] = 12.0f;
     
     Matrix m5 = { 1, 4, 4, 4,   3, 1, 4, 4,   3, 3, 1, 4,   3, 3, 12, 1 };
     assert(m == m5);
-    
+
     m[3_x, 2_y] = 42.0f;
     
     Matrix m6 = { 1, 4, 4, 4,   3, 1, 4, 4,   3, 3, 1, 42,   3, 3, 12, 1 };
     assert(m == m6);
-    
+
     m[m.y == 0] = 2.0f;
     
     Matrix m7 = { 2, 2, 2, 2,   3, 1, 4, 4,   3, 3, 1, 42,   3, 3, 12, 1 };
-    assert(m == m7);*/
+    assert(m == m7);
 }
 
 int main(int argc, char * argv[])
