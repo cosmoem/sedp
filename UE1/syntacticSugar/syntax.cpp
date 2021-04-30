@@ -132,7 +132,10 @@ struct Generator
 // MATRIX
 struct Matrix
 {
+    float m_f[16];
+    static const int SIZE = sizeof(m_f)/sizeof(m_f[0]);
 
+    // structs to indirectly save the conditions "m.x == m.y", "m.x < m.y", "m.x > m.y"
     struct ConditionX {
         int x;
     };
@@ -145,27 +148,58 @@ struct Matrix
         int x, y;
     };
 
+    // struct to represent cells of the matrix that should be modified on condition
     struct Cells {
         Matrix& m;
-        int indeces[16] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+        // array used to store indices at which the condition for assignment was met
+        int indices[SIZE] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}; // default values are < 0 to check later on if they were set or not
 
+        // constructor
         Cells(Matrix &m) : m(m) {};
 
+        // overload = to assign a float value to all cells in indices array that meet the condition for assignment
         Matrix& operator=(float value) {
             for (int i=0; i<16; i++) {
-                if(this->indeces[i] >= 0) {
-                    m.m_f[indeces[i]] = value;
+                if(this->indices[i] >= 0) {
+                    m.m_f[indices[i]] = value;
                 }
             }
             return this->m;
         }
     };
 
-    float m_f[16];
+    // define x and y to be able to access m.x and m.y
     ConditionX x;
     ConditionY y;
-    const int SIZE = sizeof(m_f)/sizeof(m_f[0]);
 
+    // Constructor 1: default, all zero
+    Matrix()
+    {
+        for (size_t i = 0; i < SIZE; i++)
+        {
+            m_f[i] = 0.0f;
+        }
+        // default values are < 0 to check later on if they were set or not
+        x = ConditionX {-1};
+        y = ConditionY {-1};
+    }
+
+    // Constructor 2: from initializer list
+    Matrix(std::initializer_list<float> initializer)
+    {
+        assert(initializer.size() == SIZE); // sizeof of an array returns total size in bytes --> divide by size of a single element
+        size_t i = 0;
+        for (auto value : initializer)
+        {
+            m_f[i] = value;
+            i++;
+        }
+        // default values are < 0 to check later on if they were set or not
+        x = ConditionX {-1};
+        y = ConditionY {-1};
+    }
+
+    // overload ==, <, and > to describe different possible conditions
     friend Condition operator==(ConditionY y, ConditionX x) {
         return Condition {0,0};
     }
@@ -178,74 +212,52 @@ struct Matrix
         return Condition {0,1};
     }
 
+    // overload subscription operator to resolve the condition
+    // --> returns Cells object which contains the indices at which the condition was met
     Cells operator[](Condition a) {
-        Cells cells = Cells {*this};
+        Cells cells = Cells {*this}; // matrix passed by reference so that it's modifiable
         int counter = 0;
+        // == condition, checks if > 0 to exclude default values
         if(a.y == a.x && a.y >= 0) {
             for (size_t i = 0; i < SIZE; i++)
             {
                 int x_pos = (i / 4);
                 int y_pos = i - x_pos*4;
                 if(x_pos==y_pos) {
-                    cells.indeces[counter] = i;
+                    cells.indices[counter] = i;
                     counter++;
                 }
             }
         }
-        else if(a.y < a.x && a.y >= 0) {
+        // < condition
+        else if(a.y < a.x) {
             for (size_t i = 0; i < SIZE; i++)
             {
                 int x_pos = (i / 4);
                 int y_pos = i - x_pos*4;
                 if(x_pos<y_pos) {
-                    cells.indeces[counter] = i;
+                    cells.indices[counter] = i;
                     counter++;
                 }
             }
         }
-        else {
+        // > condition
+        else if(a.y > a.x && a.y){
             for (size_t i = 0; i < SIZE; i++)
             {
                 int x_pos = (i / 4);
                 int y_pos = i - x_pos*4;
                 if(x_pos>y_pos) {
-                    cells.indeces[counter] = i;
+                    cells.indices[counter] = i;
                     counter++;
                 }
             }
         }
+        // if the condition contains default values, matrix is not modified
         return cells;
     }
 
-public:
-
-    Matrix& operator[](Matrix m1) {
-
-    }
-
-    Matrix()
-    {
-        for (size_t i = 0; i < SIZE; i++)
-        {
-            m_f[i] = 0.0f;
-        }
-        x = ConditionX {-1};
-        y = ConditionY {-1};
-    }
-    
-    Matrix(std::initializer_list<float> initializer)
-    {
-        assert(initializer.size() == SIZE); // sizeof of an array returns total size in bytes --> divide by size of a single element
-        size_t i = 0;
-        for (auto value : initializer)
-        {
-            m_f[i] = value;
-            i++;
-        }
-        x = ConditionX {-1};
-        y = ConditionY {-1};
-    }
-
+    // define equality
     bool operator==(Matrix m1) {
         // when comparing two arrays with == the pointers are compared --> no equality, instead compare each element
         for(int i=0; i< sizeof(m_f)/sizeof(m_f[0]); i++) {
