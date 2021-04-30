@@ -63,7 +63,6 @@ struct Account
         a1.balance.cents += c;
     };
 
-
     friend unsigned long long int operator << (Account & a1, Currency c) {
         a1.balance.cents += c.cents;
         return c.cents;
@@ -119,31 +118,52 @@ struct Generator
     }
 };
 
+struct Coordinate {
+    int index;
+
+    operator==(Coordinate c) {
+
+    }
+};
+
+struct Cell {
+    float value;
+    Coordinate x, y;
+};
+
 struct Matrix
 {
+
+    const int SIZE = sizeof(m_f)/sizeof(m_f[0]);
+
     Matrix()
     {
-        for (size_t i = 0; i < sizeof(m_f); ++i)
+        for (size_t i = 0; i < SIZE; i++)
         {
-            m_f[i++] = 0.0f;
+            int x_value = (i / 4);
+            int y_value = i - x_value*4;
+            m_f[i] = Cell {0.0f, x_value, y_value};
         }
     }
     
     Matrix(std::initializer_list<float> initializer)
     {
-        assert(initializer.size() == (sizeof(m_f)/sizeof(m_f[0]))); // sizeof of an array returns total size in bytes --> divide by size of a single element
+        assert(initializer.size() == SIZE); // sizeof of an array returns total size in bytes --> divide by size of a single element
         
         size_t i = 0;
         for (auto value : initializer)
         {
-            m_f[i++] = value;
+            int x_value = (i / 4);
+            int y_value = i - x_value*4;
+            m_f[i] = Cell {0.0f, x_value, y_value};
+            i++;
         }
     }
 
     bool operator==(Matrix m1) {
         // when comparing two arrays with == the pointers are compared --> no equality, instead compare each element
         for(int i=0; i< sizeof(m_f)/sizeof(m_f[0]); i++) {
-            if(m1.m_f[i] != this->m_f[i]) {
+            if(m1.m_f[i].value != this->m_f[i].value) {
                 return false;
             }
         }
@@ -152,16 +172,37 @@ struct Matrix
 
     bool operator!=(Matrix m1) {
         for(int i=0; i< sizeof(m_f)/sizeof(m_f[0]); i++) {
-            if(m1.m_f[i] != this->m_f[i]) {
+            if(m1.m_f[i].value != this->m_f[i].value) {
                 return true;
             }
         }
         return false;
     }
 
+    Matrix& operator=(float value) {
+        for(int i=0; i< sizeof(m_f)/sizeof(m_f[0]); i++) {
+            if(this->condition) {
+                this->m_f->value = value;
+            }
+        }
+        return * this;
+    }
+
+    Coordinate x;
+    Coordinate y;
+    bool condition;
+
 protected:
-    float m_f[16];
+    Cell m_f[16];
 };
+
+Coordinate operator "" _y(unsigned long long int y) {
+    return Coordinate{static_cast<int>(y)};
+}
+
+Coordinate operator "" _x(unsigned long long int x) {
+    return Coordinate{static_cast<int>(x)};
+}
 
 // End of solution
 // Do not edit the source code below!
@@ -231,10 +272,9 @@ void matrix()
     
     Matrix m1 = { 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0 };
     assert(m == m1);
-    /*
 
     m[m.y == m.x] = 1.0f;
-    
+
     Matrix m2 = { 1, 0, 0, 0,   0, 1, 0, 0,   0, 0, 1, 0,   0, 0, 0, 1 };
     assert(m == m2);
     
@@ -261,7 +301,7 @@ void matrix()
     m[m.y == 0] = 2.0f;
     
     Matrix m7 = { 2, 2, 2, 2,   3, 1, 4, 4,   3, 3, 1, 42,   3, 3, 12, 1 };
-    assert(m == m7);*/
+    assert(m == m7);
 }
 
 int main(int argc, char * argv[])
