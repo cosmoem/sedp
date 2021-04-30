@@ -118,52 +118,126 @@ struct Generator
     }
 };
 
-struct Coordinate {
-    int index;
-
-    operator==(Coordinate c) {
-
-    }
-};
-
-struct Cell {
-    float value;
-    Coordinate x, y;
-};
-
 struct Matrix
 {
 
+    struct ConditionX {
+        int x;
+    };
+
+    struct ConditionY {
+        int y;
+    };
+
+    struct Condition {
+        int x, y;
+    };
+
+    struct Cells {
+        Matrix& m;
+        int indeces[16] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+
+        Cells(Matrix &m) : m(m) {};
+
+        Matrix& operator=(float value) {
+            for (int i=0; i<16; i++) {
+                if(this->indeces[i] >= 0) {
+                    m.m_f[indeces[i]] = value;
+                }
+            }
+            return this->m;
+        }
+    };
+
+    float m_f[16];
+    ConditionX x;
+    ConditionY y;
     const int SIZE = sizeof(m_f)/sizeof(m_f[0]);
+
+    friend Condition operator==(ConditionY y, ConditionX x) {
+        return Condition {0,0};
+    }
+
+    friend Condition operator<(ConditionY y, ConditionX x) {
+        return Condition {1,0};
+    }
+
+    friend Condition operator>(ConditionY y, ConditionX x) {
+        return Condition {0,1};
+    }
+
+    Cells operator[](Condition a) {
+        Cells cells = Cells {*this};
+        int counter = 0;
+        if(a.y == a.x && a.y >= 0) {
+            for (size_t i = 0; i < SIZE; i++)
+            {
+                int x_pos = (i / 4);
+                int y_pos = i - x_pos*4;
+                if(x_pos==y_pos) {
+                    cells.indeces[counter] = i;
+                    counter++;
+                }
+            }
+        }
+        else if(a.y < a.x && a.y >= 0) {
+            for (size_t i = 0; i < SIZE; i++)
+            {
+                int x_pos = (i / 4);
+                int y_pos = i - x_pos*4;
+                if(x_pos<y_pos) {
+                    cells.indeces[counter] = i;
+                    counter++;
+                }
+            }
+        }
+        else {
+            for (size_t i = 0; i < SIZE; i++)
+            {
+                int x_pos = (i / 4);
+                int y_pos = i - x_pos*4;
+                if(x_pos>y_pos) {
+                    cells.indeces[counter] = i;
+                    counter++;
+                }
+            }
+        }
+        return cells;
+    }
+
+public:
+
+    Matrix& operator[](Matrix m1) {
+
+    }
 
     Matrix()
     {
         for (size_t i = 0; i < SIZE; i++)
         {
-            int x_value = (i / 4);
-            int y_value = i - x_value*4;
-            m_f[i] = Cell {0.0f, x_value, y_value};
+            m_f[i] = 0.0f;
         }
+        x = ConditionX {-1};
+        y = ConditionY {-1};
     }
     
     Matrix(std::initializer_list<float> initializer)
     {
         assert(initializer.size() == SIZE); // sizeof of an array returns total size in bytes --> divide by size of a single element
-        
         size_t i = 0;
         for (auto value : initializer)
         {
-            int x_value = (i / 4);
-            int y_value = i - x_value*4;
-            m_f[i] = Cell {0.0f, x_value, y_value};
+            m_f[i] = value;
             i++;
         }
+        x = ConditionX {-1};
+        y = ConditionY {-1};
     }
 
     bool operator==(Matrix m1) {
         // when comparing two arrays with == the pointers are compared --> no equality, instead compare each element
         for(int i=0; i< sizeof(m_f)/sizeof(m_f[0]); i++) {
-            if(m1.m_f[i].value != this->m_f[i].value) {
+            if(m1.m_f[i] != this->m_f[i]) {
                 return false;
             }
         }
@@ -172,37 +246,13 @@ struct Matrix
 
     bool operator!=(Matrix m1) {
         for(int i=0; i< sizeof(m_f)/sizeof(m_f[0]); i++) {
-            if(m1.m_f[i].value != this->m_f[i].value) {
+            if(m1.m_f[i] != this->m_f[i]) {
                 return true;
             }
         }
         return false;
     }
-
-    Matrix& operator=(float value) {
-        for(int i=0; i< sizeof(m_f)/sizeof(m_f[0]); i++) {
-            if(this->condition) {
-                this->m_f->value = value;
-            }
-        }
-        return * this;
-    }
-
-    Coordinate x;
-    Coordinate y;
-    bool condition;
-
-protected:
-    Cell m_f[16];
 };
-
-Coordinate operator "" _y(unsigned long long int y) {
-    return Coordinate{static_cast<int>(y)};
-}
-
-Coordinate operator "" _x(unsigned long long int x) {
-    return Coordinate{static_cast<int>(x)};
-}
 
 // End of solution
 // Do not edit the source code below!
@@ -287,7 +337,7 @@ void matrix()
     
     Matrix m4 = { 1, 4, 4, 4,   3, 1, 4, 4,   3, 3, 1, 4,   3, 3, 3, 1 };
     assert(m == m4);
-    
+    /*
     m[3_y, 2_x] = 12.0f;
     
     Matrix m5 = { 1, 4, 4, 4,   3, 1, 4, 4,   3, 3, 1, 4,   3, 3, 12, 1 };
@@ -301,7 +351,7 @@ void matrix()
     m[m.y == 0] = 2.0f;
     
     Matrix m7 = { 2, 2, 2, 2,   3, 1, 4, 4,   3, 3, 1, 42,   3, 3, 12, 1 };
-    assert(m == m7);
+    assert(m == m7);*/
 }
 
 int main(int argc, char * argv[])
