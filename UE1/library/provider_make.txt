@@ -8,17 +8,17 @@ option 1: when passing PROVIDER_NAME inside code via #define
 g++ -std=c++14 -D PROVIDER_API_EXPORTS -o provider.o -I./ -c ./provider.cpp
 
 option 2: when passing PROVIDER_NAME via command line
-g++ -std=c++14 -D PROVIDER_API_EXPORTS -D PROVIDER_NAME="\"test\"" -o provider.o -I./ -c ./provider.cpp
+g++ -std=c++14 -D PROVIDER_API_EXPORTS -D PROVIDER_NAME="\"Alison Trettin & Anna-Frieda Gruse\"" -o provider.o -I./ -c ./provider.cpp
 --> returns provider.o
 
 1.2) linking:
-g++ -std=c++14 -dynamiclib -o provider ./provider.o -L./
+g++ -std=c++14 -dynamiclib -o providerlib ./provider.o -L./
 --> returns providerlib
 
 2) testing:
 
 2.1) compilation + linking:
-g++ -std=c++14 -Wl,-rpath,'./' -o providertest providerlibtest.cpp -L./ provider
+g++ -std=c++14 -Wl,-rpath,'./' -o providertest providerlibtest.cpp -L./ providerlib
 --> returns providertest
 
 2.2) execution:
