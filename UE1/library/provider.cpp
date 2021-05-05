@@ -7,8 +7,8 @@
 // pass PROVIDER_NAME using compiler options
 #define PROVIDER_NAME "Alison Trettin & Anna-Frieda Gruse"
 /*
- alternatively use the following then compiling to pass via command line:
- g++ -std=c++14 -D PROVIDER_API_EXPORTS -D PROVIDER_NAME="\"test\"" -o provider.o -I./ -c ./provider.cpp
+ alternatively use the following when compiling to pass via command line:
+ g++ -std=c++14 -D PROVIDER_API_EXPORTS -D PROVIDER_NAME="\"Alison Trettin & Anna-Frieda Gruse\"" -o provider.o -I./ -c ./provider.cpp
 */
 
 namespace provider
