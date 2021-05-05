@@ -5,7 +5,6 @@
 #include <vector>
 #include <sstream>
 
-// TODO: Start of solution
 // You may edit / add anything from here to satisfy the interfaces and behaviors expected by the execution code below
 
 // CURRENCY
@@ -133,6 +132,7 @@ struct Generator
 struct Matrix
 {
     float m_f[16];
+    // sizeof of an array returns total size in bytes --> divide by size of a single element
     static const int SIZE = sizeof(m_f)/sizeof(m_f[0]);
 
     // structs to indirectly save the conditions "m.column == m.row", "m.column < m.row", "m.column > m.row"
@@ -179,7 +179,7 @@ struct Matrix
         {
             m_f[i] = 0.0f;
         }
-        // default values are < 0 to check later on if they were set or not
+        // default values are -100 to check later on if they were set or not
         x = ConditionX {-100};
         y = ConditionY {-100};
     }
@@ -187,7 +187,7 @@ struct Matrix
     // Constructor 2: from initializer list
     Matrix(std::initializer_list<float> initializer)
     {
-        assert(initializer.size() == SIZE); // sizeof of an array returns total size in bytes --> divide by size of a single element
+        assert(initializer.size() == SIZE);
         size_t i = 0;
         for (auto value : initializer)
         {
@@ -199,7 +199,7 @@ struct Matrix
         y = ConditionY {-100};
     }
 
-    // overload ==, <, and > to describe different possible conditions
+    // overload operators to describe different possible conditions
     friend Condition operator==(ConditionY y, ConditionX x) {
         return Condition {-1,-1};
     }
@@ -322,7 +322,7 @@ void generator()
     Generator gen;
     std::vector<float> floats;
     std::vector<Object> objects;
-	
+
     assert(objects.size() == Generator::objectInstanceCount);
 
     for (auto i = 0; i < 500; ++i)
@@ -340,7 +340,7 @@ void generator()
             std::cout << gen() << std::endl;
         }
     }
-    
+
     assert(objects.size() == Generator::objectInstanceCount);
 }
 
@@ -353,7 +353,7 @@ void accounting()
 
     assert(a.balance == 30066);
     assert(b.balance == 19969);
-    
+
     b << Bills::Fifty << a;
 
     assert(a.balance == 25066);
@@ -366,7 +366,6 @@ void accounting()
     stream_a << a;
     std::stringstream stream_b;
     stream_b << b;
-    std::cout << stream_a.str() << std::endl;
     assert(stream_a.str() == "Account with balance 250 euro, 66 cents");
     assert(stream_b.str() == "Account with balance 249 euro, 69 cents");
 }
@@ -374,7 +373,7 @@ void accounting()
 void matrix()
 {
     Matrix m;
-    
+
     Matrix m1 = { 0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0 };
     assert(m == m1);
 
@@ -382,29 +381,29 @@ void matrix()
 
     Matrix m2 = { 1, 0, 0, 0,   0, 1, 0, 0,   0, 0, 1, 0,   0, 0, 0, 1 };
     assert(m == m2);
-    
+
     m[m.y > m.x] = 3.0f;
-    
+
     Matrix m3 = { 1, 0, 0, 0,   3, 1, 0, 0,   3, 3, 1, 0,   3, 3, 3, 1 };
     assert(m == m3);
-    
+
     m[m.y < m.x] = 4.0f;
-    
+
     Matrix m4 = { 1, 4, 4, 4,   3, 1, 4, 4,   3, 3, 1, 4,   3, 3, 3, 1 };
     assert(m == m4);
 
     m[3_y, 2_x] = 12.0f;
-    
+
     Matrix m5 = { 1, 4, 4, 4,   3, 1, 4, 4,   3, 3, 1, 4,   3, 3, 12, 1 };
     assert(m == m5);
 
     m[3_x, 2_y] = 42.0f;
-    
+
     Matrix m6 = { 1, 4, 4, 4,   3, 1, 4, 4,   3, 3, 1, 42,   3, 3, 12, 1 };
     assert(m == m6);
 
     m[m.y == 0] = 2.0f;
-    
+
     Matrix m7 = { 2, 2, 2, 2,   3, 1, 4, 4,   3, 3, 1, 42,   3, 3, 12, 1 };
     assert(m == m7);
 }
@@ -414,6 +413,6 @@ int main(int argc, char * argv[])
     generator();
     accounting();
     matrix();
-    
+
     return 0;
 }
