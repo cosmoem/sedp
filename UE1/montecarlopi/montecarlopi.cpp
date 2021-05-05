@@ -14,8 +14,8 @@ int monteCarlo_float() {
     int insideCircleCounter = 0;
     float approximatedPi;
 
-    std::random_device r;
-    std::default_random_engine randomGenerator(r());
+    random_device r;
+    default_random_engine randomGenerator(r());
 	uniform_real_distribution<float> distribution(0.0f, 1.0f);
 
     vector<float> piVector(100000);
@@ -53,8 +53,8 @@ int monteCarlo_double() {
     int insideCircleCounter = 0;
     double approximatedPi;
 
-    std::random_device r;
-    std::default_random_engine randomGenerator(r());
+    random_device r;
+    default_random_engine randomGenerator(r());
     uniform_real_distribution<double> distribution(0.0, 1.0);
 
     vector<double> piVector(100000);
@@ -92,8 +92,8 @@ int monteCarlo_long_double() {
     int insideCircleCounter = 0;
     long double approximatedPi;
 
-    std::random_device r;
-    std::default_random_engine randomGenerator(r());
+    random_device r;
+    default_random_engine randomGenerator(r());
     uniform_real_distribution<long double> distribution(0.0L, 1.0L);
 
     vector<long double> piVector(100000);
