@@ -27,7 +27,7 @@ Storage for float Pi: 4 bytes = 32 bit
 --> 23 digits are stored, precision: up to 7 digits
 
 Most Exact Output of double Pi: 3.141592653589793115997963468544185161590576171875
-Storage for double Pi: 8 bytes = 64 bit
+Storage for double Pi: 8 bytes = 64 bit (63 bit stored because hidden bit)
 1 bit sign, 11 bit exponent, 52 bit mantissa
 --> 49 digits are stored, precision: up to 16 digits
 
