@@ -123,6 +123,7 @@ int monteCarlo_long_double() {
             }
         }
     }
+    return tries;
 }
 
 int main(int argc, char * argv[])
