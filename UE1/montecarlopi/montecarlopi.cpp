@@ -118,7 +118,7 @@ int monteCarlo_long_double() {
                 sum+=piVector.at(i);
             }
             long double averagePi = sum / (long double)PRECISION_THRESHOLD;
-            if(averagePi >= 3.1413L && averagePi <= 3.141L) {
+            if(averagePi >= 3.1413L && averagePi <= 3.1419L) {
                 notYetDone = false;
             }
         }
@@ -130,7 +130,7 @@ int main(int argc, char * argv[])
     // tries to get to a medium error of < 0.01% for the last 10000 iterations
     cout << "Float Tries: " <<  monteCarlo_float() << endl;
 	cout << "Double Tries: " << monteCarlo_double() << endl;
-	//cout << "Long Double Tries: " << monteCarlo_long_double() << endl;
+	cout << "Long Double Tries: " << monteCarlo_long_double() << endl;
 
     cout << "-----------------------------------------" << endl;
 	

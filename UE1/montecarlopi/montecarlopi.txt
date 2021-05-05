@@ -1,29 +1,20 @@
 1) How many iterations does your implementation need to get a medium error of < 0.01% for
    the last 10000 iterations (means the result is within [3.1413, 3.1419])?
 
-- Float Tries: 12.914.443
-- Double Tries: 1843242
-- Long Double Tries: 299901
-
-    ----------------------
-
-1. Versuch:
+1. Run:
 Float Tries: 10875
 Double Tries: 11965
 Long Double Tries: 32767
 
-2. Versuch:
+2. Run:
 Float Tries: 12830
 Double Tries: 21504
 Long Double Tries: 32767
 
-3. Versuch:
+3. Run:
 Float Tries: 712943
 Double Tries: 727032
 Long Double Tries: 32767
-
-
-    ----------------------
 
 2) List the most exact π representation using the C++ data-types float, double, and long
    double along with their storage in bytes for your system
