@@ -2,19 +2,19 @@
    the last 10000 iterations (means the result is within [3.1413, 3.1419])?
 
 1. Run:
-Float Tries: 10875
-Double Tries: 11965
-Long Double Tries: 32767
+Float Tries: 53517
+Double Tries: 10658
+Long Double Tries: 14278
 
 2. Run:
-Float Tries: 12830
-Double Tries: 21504
-Long Double Tries: 32767
+Float Tries: 14033
+Double Tries: 194123
+Long Double Tries: 637088
 
 3. Run:
-Float Tries: 712943
-Double Tries: 727032
-Long Double Tries: 32767
+Float Tries: 46185
+Double Tries: 14119
+Long Double Tries: 13653
 
 2) List the most exact π representation using the C++ data-types float, double, and long
    double along with their storage in bytes for your system
