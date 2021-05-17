@@ -8,6 +8,15 @@
 
 using namespace std::string_literals;
 
+void match(const std::string& match_string, std::map<std::string, int> & matches){
+    std::locale loc;
+    std::string lowercase;
+    for(auto str : match_string) {
+        lowercase += std::tolower(str, loc);
+    }
+    matches[lowercase] += 1;
+}
+
 int main(int argc, char* argv[])
 {
     if (argc < 2) {
@@ -55,7 +64,7 @@ int main(int argc, char* argv[])
 
     // Case-sensitive per default
     if(argc >= 3) {
-        if(argv[2]) { // Command-line argument to set case-insensitive TODO is there a specific command-line switch option?
+        if(strcmp(argv[2], "true") == 0) { // Command-line argument to set case-insensitive TODO is there a specific command-line switch option?
             regex.assign(argv[1], std::regex_constants::icase);
         }
     }
@@ -64,17 +73,15 @@ int main(int argc, char* argv[])
     std::map<std::string, int> matches;
     for (const auto & line : lines) {
         // discarding all unmatched lines
-        if(std::regex_match(line, base_match, regex)) {
-            // collecting and counting the match within the line
-            if (base_match.size() == 2) {
-                std::locale loc;
-                std::string match_string = base_match[1].str();
-                std::string lowercase;
-                // output to lowercase
-                for(auto str : match_string) {
-                    lowercase += std::tolower(str, loc);
-                }
-                matches[lowercase] += 1;
+        if(std::regex_search(line, base_match, regex)) {
+            // collecting and counting the matches
+            // matching simple string
+            if (base_match.size() == 1) {
+                match(base_match[0].str(), matches);
+            }
+            // matching capture group
+            else {
+                match(base_match[1].str(), matches);
             }
         }
     }
