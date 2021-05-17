@@ -67,7 +67,14 @@ int main(int argc, char* argv[])
         if(std::regex_match(line, base_match, regex)) {
             // collecting and counting the match within the line
             if (base_match.size() == 2) {
-                matches[base_match[1].str()] += + 1;
+                std::locale loc;
+                std::string match_string = base_match[1].str();
+                std::string lowercase;
+                // output to lowercase
+                for(auto str : match_string) {
+                    lowercase += std::tolower(str, loc);
+                }
+                matches[lowercase] += 1;
             }
         }
     }
