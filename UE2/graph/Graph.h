@@ -48,14 +48,6 @@ private:
  */
 class Graph {
 public:
-    /*
-    Graph(Graph && other)  noexcept
-    : m_vertices(std::move(other.m_vertices))
-    , m_edges(std::move(other.m_edges))
-    , m_instanceCounter(other.m_instanceCounter) {
-
-    }*/
-
     void addVertex(std::shared_ptr<Vertex> vertex);
     void addEdge(std::shared_ptr<Edge> edge);
 
@@ -67,7 +59,7 @@ public:
      */
     // TODO post condition isn't met
     void merge(std::shared_ptr<Graph> g2);
-    Graph * minimumSpanningTree() const;
+    std::unique_ptr<Graph> minimumSpanningTree() const;
 
     friend std::ostream& operator<<(std::ostream& stream, const Graph & graph);
 

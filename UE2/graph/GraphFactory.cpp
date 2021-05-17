@@ -10,9 +10,9 @@
 #include <list>
 
 
-std::shared_ptr<Graph> GraphFactory::createLinearGraph(std::int32_t numVertices, std::int32_t idOffset)
+std::unique_ptr<Graph> GraphFactory::createLinearGraph(std::int32_t numVertices, std::int32_t idOffset)
 {
-    auto graph = std::make_shared<Graph>();
+    auto graph = std::make_unique<Graph>();
     for (auto i = std::int32_t{0}; i < numVertices; ++i)
     {
         graph->addVertex(std::make_shared<Vertex>(i + idOffset));
@@ -25,7 +25,7 @@ std::shared_ptr<Graph> GraphFactory::createLinearGraph(std::int32_t numVertices,
 }
 
 
-std::shared_ptr<Graph> GraphFactory::createCircularGraph(std::int32_t numVertices, std::int32_t idOffset)
+std::unique_ptr<Graph> GraphFactory::createCircularGraph(std::int32_t numVertices, std::int32_t idOffset)
 {
     auto graph = createLinearGraph(numVertices, idOffset);
     graph->addEdge(std::make_shared<Edge>(graph->vertices().back(), graph->vertices().front(), 1));
@@ -33,9 +33,9 @@ std::shared_ptr<Graph> GraphFactory::createCircularGraph(std::int32_t numVertice
 }
 
 
-std::shared_ptr<Graph> GraphFactory::createTree(std::int32_t numChildren, std::int32_t idOffset)
+std::unique_ptr<Graph> GraphFactory::createTree(std::int32_t numChildren, std::int32_t idOffset)
 {
-    auto graph = std::make_shared<Graph>();
+    auto graph = std::make_unique<Graph>();
     graph->addVertex(std::make_shared<Vertex>(idOffset));
     for (auto i = std::int32_t{0}; i < numChildren; ++i)
     {
@@ -46,13 +46,13 @@ std::shared_ptr<Graph> GraphFactory::createTree(std::int32_t numChildren, std::i
 }
 
 
-std::shared_ptr<Graph> GraphFactory::createRandomGraph(std::int32_t numVertices, std::int32_t idOffset)
+std::unique_ptr<Graph> GraphFactory::createRandomGraph(std::int32_t numVertices, std::int32_t idOffset)
 {
     // Edge id for the purpose of creating a map/set
     using EdgeId = std::pair<std::int32_t, std::int32_t>;
     auto makeId = [](std::shared_ptr<Edge> edge) { return std::make_pair(edge->v0()->id(), edge->v1()->id()); };
 
-    auto graph = std::make_shared<Graph>();
+    auto graph = std::make_unique<Graph>();
     auto prng = std::mt19937{42}; // fixed seed
 
     // generate vertices
