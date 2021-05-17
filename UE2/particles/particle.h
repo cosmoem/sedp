@@ -23,14 +23,17 @@
 using time_point = std::chrono::high_resolution_clock::time_point;
 using secs = std::chrono::duration<float, std::chrono::seconds::period>;
 
+struct MemoryPool;
 
 struct Particle
 {
+    static MemoryPool pool;
     QVector2D  position;
     QVector2D  velocity;
     time_point tod;     // time of death
     float      energy;  // energy carrying
 
     // ToDo: forward declare here
+    void* operator new(std::size_t size);
+    void operator delete(void* ptr) noexcept;
 };
-
