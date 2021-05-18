@@ -33,7 +33,6 @@ struct Particle
     time_point tod;     // time of death
     float      energy{};  // energy carrying
 
-    // ToDo: forward declare here
     void* operator new(std::size_t size) noexcept;
     void operator delete(void* ptr) noexcept;
 };

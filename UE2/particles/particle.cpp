@@ -1,9 +1,6 @@
 #include <iostream>
 #include <new>
-#include <vector>
 #include "particle.h"
-
-// ToDo: define memory management here
 
 MemoryPool Particle::pool = MemoryPool();
 
