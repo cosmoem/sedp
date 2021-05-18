@@ -19,5 +19,55 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)
 libc++abi.dylib: terminating with uncaught exception of type std::out_of_range: array::at
 ./build.sh: line 5: 33565 Abort trap: 6           ./runner 1
 
---> handling std::out_of_range::exception with try catch
---> handling signal SIGABRT
+--> handling std::out_of_range with try catch
+
+libc++abi: terminating with uncaught exception of type std::__1::regex_error: The expression contained mismatched [ and ].
+Received SIGABRT 6 - IGNORING AND CONTINUING...
+./build.sh: line 5: 24280 Abort trap: 6           ./runner 1
+
+--> handling std::regex_error with try catch
+
+libc++abi: terminating with uncaught exception of type std::bad_cast: std::bad_cast
+Received SIGABRT 6 - IGNORING AND CONTINUING...
+./build.sh: line 5: 24340 Abort trap: 6           ./runner 1
+
+--> handling std::bad_cast with try catch
+
+libc++abi: terminating with uncaught exception of type std::__1::ios_base::failure: ios_base::clear: unspecified iostream_category error
+Received SIGABRT 6 - IGNORING AND CONTINUING...
+./build.sh: line 5: 24377 Abort trap: 6           ./runner 1
+
+--> handling std::ios_base::failure with try catch
+
+libc++abi: terminating with uncaught exception of type std::__1::bad_function_call: std::exception
+Received SIGABRT 6 - IGNORING AND CONTINUING...
+./build.sh: line 5: 24417 Abort trap: 6           ./runner 1
+
+--> handling std::bad_function_call with try catch
+
+libc++abi: terminating with uncaught exception of type std::__1::system_error: thread::detach failed: Invalid argument
+Received SIGABRT 6 - IGNORING AND CONTINUING...
+./build.sh: line 5: 24495 Abort trap: 6           ./runner 1
+
+--> handling std::system_error with try catch
+
+libc++abi: terminating with uncaught exception of type std::invalid_argument: stoi: no conversion
+Received SIGABRT 6 - IGNORING AND CONTINUING...
+./build.sh: line 5: 24539 Abort trap: 6           ./runner 1
+
+--> handling std::invalid_argument with try catch
+
+./build.sh: line 5: 24573 Illegal instruction: 4  ./runner 1
+
+--> adding handler for SIGILL
+
+--> adding handler for SIGABRT
+
+
+only occurred for ./runner 1000000:
+
+libc++abi: terminating with uncaught exception of type std::bad_alloc: std::bad_alloc
+Received SIGABRT 6 - IGNORING AND CONTINUING...
+./build.sh: line 8: 25144 Abort trap: 6           ./runner 1000000
+
+--> handling std::bad_alloc with try catch
