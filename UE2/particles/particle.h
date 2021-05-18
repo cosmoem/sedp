@@ -31,7 +31,7 @@ struct Particle
     QVector2D  position;
     QVector2D  velocity;
     time_point tod;     // time of death
-    float      energy;  // energy carrying
+    float      energy{};  // energy carrying
 
     // ToDo: forward declare here
     void* operator new(std::size_t size) noexcept;
@@ -39,15 +39,14 @@ struct Particle
 };
 
 struct MemoryPool {
-    std::size_t initial;
-    uint8_t buf[32*10000];
-    bool freeList[10000];
+    static const long bufferSize = static_cast<const long>(1572999999.9999673); // ca. 1.5MiB
+    static const int freeListSize = bufferSize / sizeof(Particle);
+    char buf[bufferSize]{};
+    bool freeList[freeListSize]{};
 public:
-    explicit MemoryPool(std::size_t initial = 10000);
+    explicit MemoryPool() noexcept;
     ~MemoryPool();
     void* addToPool(std::size_t sz);
     void deleteFromPool(void* ptr);
-    //Particle& operator[](size_t n);
-    //Particle operator[](size_t n) const;
 };
 
