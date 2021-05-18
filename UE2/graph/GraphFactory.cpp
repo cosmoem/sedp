@@ -3,11 +3,8 @@
 
 #include <random>
 #include <set>
-#include <array>
 
 #include "Graph.h"
-#include <map>
-#include <list>
 
 
 std::unique_ptr<Graph> GraphFactory::createLinearGraph(std::int32_t numVertices, std::int32_t idOffset)

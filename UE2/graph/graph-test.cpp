@@ -1,6 +1,5 @@
 
 #include <iostream>
-#include <numeric>
 
 #include "Graph.h"
 #include "GraphFactory.h"
