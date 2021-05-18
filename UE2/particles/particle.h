@@ -34,6 +34,20 @@ struct Particle
     float      energy;  // energy carrying
 
     // ToDo: forward declare here
-    void* operator new(std::size_t size);
+    void* operator new(std::size_t size) noexcept;
     void operator delete(void* ptr) noexcept;
 };
+
+struct MemoryPool {
+    std::size_t initial;
+    uint8_t buf[32*10000];
+    bool freeList[10000];
+public:
+    explicit MemoryPool(std::size_t initial = 10000);
+    ~MemoryPool();
+    void* addToPool(std::size_t sz);
+    void deleteFromPool(void* ptr);
+    //Particle& operator[](size_t n);
+    //Particle operator[](size_t n) const;
+};
+
