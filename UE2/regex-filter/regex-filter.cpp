@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 
     // Input
     
-    const auto filename = "emails.txt"s;
+    const auto filename = "emails.txt"s; // change to ../emails.txt for cmake
     std::ifstream file(filename, std::ios::in);
 
     if (!file.good())
@@ -64,25 +64,19 @@ int main(int argc, char* argv[])
 
     // Case-sensitive per default
     if(argc >= 3) {
-        if(strcmp(argv[2], "true") == 0) { // Command-line argument to set case-insensitive TODO is there a specific command-line switch option?
+        if(strcmp(argv[2], "true") == 0) { // Command-line argument to set case-insensitive
             regex.assign(argv[1], std::regex_constants::icase);
         }
     }
 
     std::smatch base_match;
     std::map<std::string, int> matches;
-    for (const auto & line : lines) {
+    for (const auto & l : lines) {
         // discarding all unmatched lines
-        if(std::regex_search(line, base_match, regex)) {
+        if(std::regex_search(l, base_match, regex)) {
             // collecting and counting the matches
             // matching simple string
-            if (base_match.size() == 1) {
-                match(base_match[0].str(), matches);
-            }
-            // matching capture group
-            else {
-                match(base_match[1].str(), matches);
-            }
+            match(base_match[base_match.size()-1].str(), matches);
         }
     }
 
@@ -93,9 +87,3 @@ int main(int argc, char* argv[])
     
     return 0;
 }
-
-// compile: g++ -std=c++14 -o regex-filter regex-filter.cpp
-// run case-sensitive option 1: ./regex-filter "Lu.*@(hpi|student.*).de" --> no results
-// run case-sensitive option 2: ./regex-filter "Lu.*@(hpi|student.*).de" false --> no results
-// run case-insensitive: ./regex-filter "Lu.*@(hpi|student.*).de" true --> hpi: 1, student.hpi.uni-potsdam: 2
-// run case-sensitive: ./regex-filter "lu.*@(hpi|student.*).de" --> hpi: 1, student.hpi.uni-potsdam: 2
