@@ -11,9 +11,9 @@ add_executable(tea_filebuf
 )
 
 # Task 3.2
-# add_executable(integration
-#     integration/integration.cpp
-# )
+add_executable(integration
+    integration/integration.cpp
+)
 
 # Task 3.3
 add_executable(token_iterator
@@ -23,4 +23,6 @@ add_executable(token_iterator
 # Task 3.4
 add_executable(modcounter
     modcounter/test.cpp
+    modcounter/modcounter.h
+    modcounter/modcounter.cpp
 )
