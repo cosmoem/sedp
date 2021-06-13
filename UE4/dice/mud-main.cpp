@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <game.h>
 
 
 int main(int argc, char * argv[])
@@ -26,10 +27,16 @@ int main(int argc, char * argv[])
     }
     
     // TODO: create game
-    
+    Game game = Game("mud");
+
     // TODO: create players
-    
+    for (int i = 0; i < numPlayers; i++) {
+        game.addPlayer(Player());
+    }
+
     // TODO: simulate game
+    game.simulateNumberOfRounds(numRounds);
     
     // TODO: output results
+    game.printGameState();
 }

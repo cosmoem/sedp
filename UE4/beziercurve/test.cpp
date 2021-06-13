@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <array>
+#include <cmath>
 
 #include "CubicBezierCurve.h"
 
