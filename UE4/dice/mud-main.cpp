@@ -1,7 +1,5 @@
-
 #include <iostream>
-#include <game.h>
-
+#include "game.h"
 
 int main(int argc, char *argv[]) {
     const auto printUsage = [argv] { std::cout << "usage: " << argv[0] << " <num players> <num rounds>" << std::endl; };

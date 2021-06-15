@@ -5,7 +5,7 @@
 class Player {
 public:
     int addScore(int scoreToAdd);
-    int getScore();
+    int getScore() const;
 private:
     int score;
 };

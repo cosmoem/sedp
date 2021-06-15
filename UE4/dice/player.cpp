@@ -5,6 +5,6 @@ int Player::addScore(int scoreToAdd) {
     return this->score;
 }
 
-int Player::getScore() {
+int Player::getScore() const {
     return this->score;
 }

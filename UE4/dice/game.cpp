@@ -1,8 +1,7 @@
-#include "game.h"
-
 #include <vector>
 #include <iostream>
 #include <numeric>
+#include "game.h"
 
 void Game::addPlayer(const Player &player) {
     this->players.push_back(player);
@@ -15,7 +14,6 @@ void Game::printGameState() {
     printTeamResults();
 }
 
-
 void Game::printTeamResults() {
     if (gameType == GameType::Seven) {
         std::cout << "-------" << '\n';
@@ -25,12 +23,11 @@ void Game::printTeamResults() {
     std::cout << std::flush;
 }
 
-int Game::getTeamScore(std::vector<Player *> &team) {
+int Game::getTeamScore(std::vector<Player*> &team) {
     return std::accumulate(team.begin(), team.end(), 0, [](int acc, Player *player) {
         return acc + player->getScore();
     });
 }
-
 
 void Game::simulateNumberOfRounds(int numberOfRounds) {
     for (int i = 0; i < numberOfRounds; i++) {
@@ -55,7 +52,6 @@ Game::Game(int numberOfPlayers, GameType gameType) : gameType(gameType) {
     for (int i = 0; i < numberOfPlayers; i++) {
         this->addPlayer(Player());
     }
-
     if (gameType == Game::GameType::Seven) {
         this->generateTeams();
     }
@@ -69,7 +65,6 @@ void Game::generateTeams() {
         } else {
             teams.second.push_back(&player);
         }
-
         addFirst = !addFirst;
     }
 }
@@ -84,7 +79,6 @@ void Game::simulateMudRound(int &scoreToAdd) {
     int numberOfRolls = 5;
     while (numberOfRolls >= 1) {
         std::vector<int> roll = dice.rollVector(numberOfRolls);
-
         for (auto value : roll) {
             if (value == 2 || value == 5) {
                 numberOfRolls--;
