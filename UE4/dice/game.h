@@ -7,19 +7,23 @@
 
 class Game {
 public:
-    explicit Game(std::string gameType = "mud");
-    void simulateNumberOfRounds(int numberOfRounds);
-    void addPlayer(const Player& player);
-    void printGameState();
-    void generateTeams();
-private:
-    std::pair<std::vector<Player*>, std::vector<Player*>> teams;
-    std::string gameType;
-    Dice dice;
-    std::vector<Player> players;
     enum GameType {
         Mud,
         Seven,
     };
-    GameType resolveGameType(const std::string& type);
+    explicit Game(int numberOfPlayers, GameType gameType = GameType::Mud);
+    void simulateNumberOfRounds(int numberOfRounds);
+    void addPlayer(const Player& player);
+    void printGameState();
+    void generateTeams();
+    void play(int numRounds);
+private:
+    GameType gameType;
+    std::pair<std::vector<Player*>, std::vector<Player*>> teams;
+    Dice dice;
+    std::vector<Player> players;
+    void simulateSevenRound(int &scoreToAdd);
+    void simulateMudRound(int &scoreToAdd);
+    void printTeamResults();
+    int getTeamScore(std::vector<Player*> &team);
 };
