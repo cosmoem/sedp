@@ -1,12 +1,11 @@
-#include <random>
 #include "dice.h"
 
-Dice::Dice() = default;
+Dice::Dice() {
+    randomGenerator = std::default_random_engine {r()};
+    distribution = std::uniform_int_distribution {1,6};
+}
 
 int Dice::roll() {
-    std::random_device r;
-    std::default_random_engine randomGenerator{r()};
-    std::uniform_int_distribution<int> distribution{1,6};
     return distribution(randomGenerator);
 }
 
