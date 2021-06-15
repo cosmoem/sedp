@@ -1,7 +1,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <array>
 #include <cmath>
 
@@ -27,7 +26,6 @@ void draw(const CubicBezierCurve & curve, const std::string & filename)
     {
         const auto point = curve(t);
 
-        // TODO: update these to use your class interface
         const auto x = std::lround(point[0]);
         const auto y = std::lround(point[1]);
 
@@ -44,7 +42,6 @@ void draw(const CubicBezierCurve & curve, const std::string & filename)
 
 CubicBezierCurve createTestCurve()
 {
-    // TODO: update this to use your class interface
     auto c1 = CubicBezierCurve{
         {  0.0,  0.0, 0.0 },
         { 15.0, 48.0, 0.4 },
@@ -61,7 +58,6 @@ int main(int argc, char * argv[])
     auto c1 = createTestCurve();
     auto c2 = c1;
 
-    // TODO: update these to use your class interface
     c1.setControlPoint(0, { 99.0, 49.0, 0.0 });
     c1.setControlPoint(3, {  0.0,  0.0, 0.0 });
 
