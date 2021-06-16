@@ -62,7 +62,7 @@ std::unique_ptr<Node> generateGraph()
     n2->appendNode(std::move(n9));
     n2->appendNode(std::move(n10));
     n2->appendNode(std::move(n11));
-    
+
     n1->appendNode(std::move(n6));
     n1->appendNode(std::move(n7));
     n1->appendNode(std::move(n8));
@@ -72,14 +72,13 @@ std::unique_ptr<Node> generateGraph()
     n0->appendNode(std::move(n3));
     n0->appendNode(std::move(n4));
     n0->appendNode(std::move(n5));
-    
+
     return std::move(n0);
 }
 
-int main(int argc, char * argv[])
-{
+int main(int argc, char *argv[]) {
     auto graph = generateGraph();
-    
+
     graph->print(std::cout);
     std::cout << "Total weight: " << graph->weight() << std::endl;
 }
