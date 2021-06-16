@@ -8,6 +8,8 @@ namespace MI {
     public:
         explicit SecuredTransaction(const std::string &name) : Transaction(name) {}
 
+        ~SecuredTransaction() override = default;
+
     protected:
         void onBeforeProcess(const std::string &operation) override {
             std::cout << "[secured] ";
@@ -16,12 +18,5 @@ namespace MI {
         void onAfterProcess(const std::string &operation) override {
             std::cout << " [/secured]";
         }
-    };
-}
-
-
-namespace NonMI {
-    class SecuredTransaction : public Transaction {
-
     };
 }

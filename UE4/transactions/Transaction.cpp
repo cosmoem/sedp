@@ -49,3 +49,5 @@ void NonMI::Transaction::onBeforeProcess(const std::string &operation) {}
 
 
 void NonMI::Transaction::onAfterProcess(const std::string &operation) {}
+
+NonMI::Transaction::Transaction() = default;

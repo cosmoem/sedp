@@ -31,6 +31,8 @@ namespace NonMI {
     class Transaction {
     public:
         explicit Transaction(const std::string &name);
+        explicit Transaction();
+
 
         virtual ~Transaction() = default;
 
@@ -38,8 +40,6 @@ namespace NonMI {
 
         void process(const std::string &operation);
 
-
-    protected:
         virtual void onBeforeProcess(const std::string &operation);
 
         virtual void onAfterProcess(const std::string &operation);

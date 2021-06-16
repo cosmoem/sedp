@@ -5,9 +5,11 @@
 #include "SecuredTransaction.h"
 
 namespace MI {
-    class LoggedSecureTransaction : public LoggedTransaction, public SecuredTransaction {
+    class LoggedSecuredTransaction : public LoggedTransaction, public SecuredTransaction {
     public:
-        explicit LoggedSecureTransaction(const std::string &name) : LoggedTransaction(name), SecuredTransaction(name) {}
+        explicit LoggedSecuredTransaction(const std::string &name) : LoggedTransaction(name), SecuredTransaction(name) {}
+
+        ~LoggedSecuredTransaction() override = default;
 
     protected:
         void onBeforeProcess(const std::string &operation) override {

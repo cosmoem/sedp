@@ -8,6 +8,8 @@ namespace MI {
     public:
         explicit LoggedTransaction(const std::string &name) : Transaction(name) {}
 
+        ~LoggedTransaction() override = default;
+
     protected:
         void onBeforeProcess(const std::string &operation) override {
             std::cout << "[logged] ";
@@ -16,12 +18,5 @@ namespace MI {
         void onAfterProcess(const std::string &operation) override {
             std::cout << " [/logged]";
         }
-    };
-}
-
-
-namespace NonMI {
-    class LoggedTransaction : public Transaction {
-
     };
 }
