@@ -46,19 +46,19 @@ std::unique_ptr<Node> generateGraph()
     auto n16 = std::make_unique<Leaf >(16, 2);
     auto n17 = std::make_unique<Leaf >(17, 5);
     auto n18 = std::make_unique<Leaf >(18, 1);
-    
+
     n7->appendNode(std::move(n17));
     n7->appendNode(std::move(n18));
-    
+
     n6->appendNode(std::move(n15));
     n6->appendNode(std::move(n16));
-    
+
     n5->appendNode(std::move(n14));
-    
+
     n4->appendNode(std::move(n13));
-    
+
     n3->appendNode(std::move(n12));
-    
+
     n2->appendNode(std::move(n9));
     n2->appendNode(std::move(n10));
     n2->appendNode(std::move(n11));
