@@ -10,26 +10,24 @@
 
 void testMI()
 {
-    // TODO: adapt declarations (t1..t4) to use your solution for a)
     using namespace MI;
     // Basic transaction
-
     Transaction t1{ "t1" };
     t1.process("do something");
     std::cout << std::endl;
 
     // Transaction with logging
-    MI::LoggedTransaction t2{ "t2" };
+    LoggedTransaction t2{ "t2" };
     t2.process("do something with logging");
     std::cout << std::endl;
 
     // Secured transaction
-    MI::SecuredTransaction t3{ "t3" };
+    SecuredTransaction t3{ "t3" };
     t3.process("do something secured");
     std::cout << std::endl;
 
     // Secured transaction with logging
-    MI::LoggedSecuredTransaction t4{ "t4" };
+    LoggedSecuredTransaction t4{ "t4" };
     t4.LoggedTransaction::process("do something secured with logging");
     std::cout << std::endl;
 }
@@ -37,8 +35,6 @@ void testMI()
 
 void testNonMI()
 {
-
-    // TODO: adapt declarations (t1..t4) to use your solution for b)
     using namespace NonMI;
     // Basic transaction
     Transaction t1{ "t1" };
@@ -46,17 +42,17 @@ void testNonMI()
     std::cout << std::endl;
 
     // Transaction with logging
-    NonMI::LoggedDecorator t2{ new Transaction {"t2"} };
+    LoggedDecorator t2{ std::make_unique<Transaction>("t2") };
     t2.process("do something with logging");
     std::cout << std::endl;
 
     // Secured transaction
-    NonMI::SecuredDecorator t3{ new Transaction { "t3" }};
+    SecuredDecorator t3{ std::make_unique<Transaction>( "t3" )};
     t3.process("do something secured");
     std::cout << std::endl;
 
     // Secured transaction with logging
-    NonMI::LoggedDecorator t4{ new NonMI::SecuredDecorator { new Transaction { "t4" }}};
+    LoggedDecorator t4{ std::make_unique<SecuredDecorator>(std::make_unique<Transaction>( "t4" ))};
     t4.process("do something secured with logging");
     std::cout << std::endl;
 }

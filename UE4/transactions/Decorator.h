@@ -5,10 +5,11 @@
 namespace NonMI {
     class Decorator : public Transaction {
     public:
-        explicit Decorator(NonMI::Transaction* transaction);
+        explicit Decorator(std::unique_ptr<NonMI::Transaction> transaction);
+
+        ~Decorator() override = default;
 
     protected:
-        Transaction* transaction;
-
+        std::unique_ptr<Transaction> transaction;
     };
 }

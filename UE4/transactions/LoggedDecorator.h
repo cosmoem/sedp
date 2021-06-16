@@ -7,19 +7,13 @@ namespace NonMI {
     class LoggedDecorator : public Decorator {
 
     public:
-        explicit LoggedDecorator(Transaction* transaction) : Decorator(transaction) {}
+        explicit LoggedDecorator(std::unique_ptr<Transaction> transaction);
 
         ~LoggedDecorator() override = default;
 
     protected:
-        void onBeforeProcess(const std::string &operation) override {
-            std::cout << "[logged] ";
-            transaction->onBeforeProcess(operation);
-        }
+        void onBeforeProcess(const std::string &operation) override;
 
-        void onAfterProcess(const std::string &operation) override {
-            transaction->onAfterProcess(operation);
-            std::cout << " [/logged]";
-        }
+        void onAfterProcess(const std::string &operation) override;
     };
 }

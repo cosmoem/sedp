@@ -7,19 +7,13 @@ namespace NonMI {
     class SecuredDecorator : public Decorator {
 
     public:
-        explicit SecuredDecorator(Transaction* transaction) : Decorator(transaction) {}
+        explicit SecuredDecorator(std::unique_ptr<Transaction> transaction);
 
         ~SecuredDecorator() override = default;
 
     protected:
-        void onBeforeProcess(const std::string &operation) override {
-            std::cout << "[secured] ";
-            transaction->onBeforeProcess(operation);
-        }
+        void onBeforeProcess(const std::string &operation) override;
 
-        void onAfterProcess(const std::string &operation) override {
-            transaction->onAfterProcess(operation);
-            std::cout << " [/secured]";
-        }
+        void onAfterProcess(const std::string &operation) override;
     };
 }

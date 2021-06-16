@@ -7,20 +7,14 @@
 namespace MI {
     class LoggedSecuredTransaction : public LoggedTransaction, public SecuredTransaction {
     public:
-        explicit LoggedSecuredTransaction(const std::string &name) : LoggedTransaction(name), SecuredTransaction(name) {}
+        explicit LoggedSecuredTransaction(const std::string &name);
 
         ~LoggedSecuredTransaction() override = default;
 
     protected:
-        void onBeforeProcess(const std::string &operation) override {
-            LoggedTransaction::onBeforeProcess(operation);
-            SecuredTransaction::onBeforeProcess(operation);
-        }
+        void onBeforeProcess(const std::string &operation) override;
 
-        void onAfterProcess(const std::string &operation) override {
-            SecuredTransaction::onAfterProcess(operation);
-            LoggedTransaction::onAfterProcess(operation);
-        }
+        void onAfterProcess(const std::string &operation) override;
     };
 }
 

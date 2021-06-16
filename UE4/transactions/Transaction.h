@@ -15,12 +15,10 @@ namespace MI {
 
         void process(const std::string &operation);
 
-
     protected:
         virtual void onBeforeProcess(const std::string &operation);
 
         virtual void onAfterProcess(const std::string &operation);
-
 
     private:
         std::string m_name;
@@ -33,7 +31,6 @@ namespace NonMI {
         explicit Transaction(const std::string &name);
         explicit Transaction();
 
-
         virtual ~Transaction() = default;
 
         [[nodiscard]] const std::string &name() const;
@@ -43,7 +40,6 @@ namespace NonMI {
         virtual void onBeforeProcess(const std::string &operation);
 
         virtual void onAfterProcess(const std::string &operation);
-
 
     private:
         std::string m_name;
