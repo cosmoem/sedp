@@ -16,7 +16,7 @@ public:
 
 private:
     std::array<Point, 4> controlPoints;
-    std::map<double, Point> cache;
+    mutable std::map<double, Point> cache;
 
     // https://www.geeksforgeeks.org/binomial-coefficient-dp-9/
     static int binomialCoefficient(int n, int k);

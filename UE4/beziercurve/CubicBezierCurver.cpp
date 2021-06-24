@@ -15,7 +15,14 @@ void CubicBezierCurve::setControlPoint(int index, Point p) {
 }
 
 Point CubicBezierCurve::operator()(double t) const {
-    return cache.contains(t) ? cache.at(t) : deCasteljauAlgorithm(t);
+    if (cache.contains(t)) {
+        return cache.at(t);
+    }
+    else {
+        Point curvePoint = deCasteljauAlgorithm(t);
+        cache[t] = curvePoint;
+        return curvePoint;
+    }
 }
 
 int CubicBezierCurve::binomialCoefficient(int n, int k) {
