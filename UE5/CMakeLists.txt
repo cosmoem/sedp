@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(signal
     signal/signal.h
+    signal/signal.cpp
     signal/main.cpp
 )
 
