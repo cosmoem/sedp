@@ -144,12 +144,12 @@ constexpr ISBN operator"" _isbn()
 int main(int argc, char * argv[])
 {
     // using template solution, comment this out...
-    constexpr auto isbn13 = 978'4873'113'68'5_isbn;
-    constexpr auto isbn10 = 4873'113'68'5_isbn;
+    //constexpr auto isbn13 = 978'4873'113'68'5_isbn;
+    //constexpr auto isbn10 = 4873'113'68'5_isbn;
 
     // ... and replace with this
-    // constexpr auto isbn13 = "978'4873'113'68'5"_isbn;
-    // constexpr auto isbn10 = "4873'113'68'5"_isbn;
+    constexpr auto isbn13 = "978'4873'113'68'5"_isbn;
+    constexpr auto isbn10 = "4873'113'68'5"_isbn;
 
     isbn13.print();
     isbn10.print();
