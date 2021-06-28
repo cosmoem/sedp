@@ -16,8 +16,8 @@ int main(int argc, char * argv[])
     assert(!v0.hasType<float>());
     assert(!v0.hasType<std::string>());
 
-//    auto v10 = Variant(std::move(v0));
-//    assert(v10.hasType<Variant>());
+    auto v10 = Variant(std::move(v0));
+    assert(!v10.hasType<int>());
 
     auto v1 = Variant(4);
     auto b1 = v1.hasType<int>();
@@ -25,8 +25,11 @@ int main(int argc, char * argv[])
     assert(b1);
     assert(i1 == 4);
 
-//    auto v11 = Variant(v1);
-//    assert(v11.hasType<Variant>());
+    auto v11 = Variant(v1);
+    assert(v11.hasType<int>());
+    auto v12 = Variant(std::move(v1));
+    assert(v12.hasType<int>());
+
 
     auto v2 = Variant(3.14f);
     auto b2 = v2.hasType<float>();

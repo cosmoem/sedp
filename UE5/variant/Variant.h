@@ -35,9 +35,9 @@ public:
         typeHashCode = typeid(Type).hash_code();
     }
 
-    Variant(Variant &&) = default;
+    Variant(Variant && other)  noexcept : Variant(other.typeContainer.get()) {};
 
-    Variant(Variant const & variant) = default;
+    Variant(Variant const & other) : typeContainer(other.typeContainer.get()), typeHashCode(other.typeHashCode) {};
 
     template <typename InputType>
     bool hasType() {
