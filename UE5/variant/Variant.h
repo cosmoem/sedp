@@ -37,7 +37,7 @@ public:
         typeHashCode = typeid(Type).hash_code();
     }
 
-    Variant(Variant && other) noexcept;
+    Variant(Variant && other) noexcept = default;
 
     Variant(Variant const & other) = default;
 
