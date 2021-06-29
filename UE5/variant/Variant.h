@@ -2,6 +2,8 @@
 #pragma once
 
 #include <typeindex>
+#include <stdexcept>
+#include <memory>
 
 class Variant {
 private:
@@ -35,9 +37,9 @@ public:
         typeHashCode = typeid(Type).hash_code();
     }
 
-    Variant(Variant && other)  noexcept : Variant(other.typeContainer.get()) {};
+    Variant(Variant && other) noexcept;
 
-    Variant(Variant const & other) : typeContainer(other.typeContainer.get()), typeHashCode(other.typeHashCode) {};
+    Variant(Variant const & other) = default;
 
     template <typename InputType>
     bool hasType() {

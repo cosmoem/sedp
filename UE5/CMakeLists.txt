@@ -14,6 +14,7 @@ add_executable(signal
 add_executable(variant
     variant/variant.h
     variant/main.cpp
+    variant/variant.cpp
 )
 
 
