@@ -17,8 +17,7 @@ public:
 
     template<typename Z>
     void connect(Z object, void (Z::* const mf)(T...)) {
-        auto x = [&object, mf](auto... args) { return (object.*mf)(args...); };
-        this->callbacks_.push_back(x);
+        this->callbacks_.push_back([&object, mf](auto... args) { return (object.*mf)(args...); });
     };
 
     void emit(T... values) {
