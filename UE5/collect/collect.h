@@ -1,7 +1,7 @@
 
 #pragma once
 
-template<typename R>
+template <typename R>
 R collect(auto input, auto function) {
     auto output = R();
     for (auto &element : input) {

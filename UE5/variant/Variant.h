@@ -1,9 +1,9 @@
 
 #pragma once
 
-#include <typeindex>
 #include <stdexcept>
 #include <memory>
+#include <typeinfo>
 
 class Variant {
 private:

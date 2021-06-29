@@ -3,9 +3,8 @@
 #include <vector>
 #include <iostream>
 #include <functional>
-#include <iostream>
 
-template<typename... T>
+template <typename... T>
 class Signal {
 public:
     Signal() {
