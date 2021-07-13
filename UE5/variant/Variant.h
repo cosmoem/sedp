@@ -5,56 +5,105 @@
 #include <memory>
 #include <typeinfo>
 
-class Variant {
-private:
-    struct AbstractTypeContainer {
-        virtual ~AbstractTypeContainer() = default;
-    };
+namespace {
 
-    template <typename InnerType>
-    struct TypeContainer : AbstractTypeContainer {
-        TypeContainer() = default;
+    inline namespace v2 {
+        class Variant {
+        public:
+            Variant() = default;
 
-        ~TypeContainer() override = default;
+            ~Variant() = default;
 
-        explicit TypeContainer(InnerType value) : type(value) {}
-        InnerType type;
-        InnerType& getValue() {
-            return type;
-        }
-    };
+            template<typename Type>
+            explicit Variant(Type value) {
+                Type* ptr = &value;
+                value_ = ptr;
+                typeHashCode = typeid(Type).hash_code();
+            }
 
-    std::shared_ptr<AbstractTypeContainer> typeContainer;
-    size_t typeHashCode{};
-public:
-    Variant() = default;
+            template<typename InputType>
+            bool hasType() {
+                auto test = typeid(InputType).hash_code();
+                if (typeHashCode == test) {
+                    return true;
+                }
+                return false;
+            }
 
-    ~Variant() = default;
+            template<typename InputType>
+            InputType get() {
+                if (hasType<InputType>()) {
+                    //InputType val = *static_cast<InputType*>(value_);
+                    InputType val = *reinterpret_cast<InputType*>(value_);
+                    //InputType val = *((InputType*)(value_));
+                    return val;
+                }
+                throw std::logic_error("Types don't match!");
+            }
 
-    template <typename Type>
-    explicit Variant(Type value) {
-        typeContainer = std::make_shared<TypeContainer<Type>>(std::move(value));
-        typeHashCode = typeid(Type).hash_code();
+        private:
+            void * value_;
+            size_t typeHashCode;
+        };
     }
 
-    Variant(Variant && other) noexcept = default;
+    namespace v1 {
+        class Variant {
+        private:
+            struct AbstractTypeContainer {
+                virtual ~AbstractTypeContainer() = default;
+            };
 
-    Variant(Variant const & other) = default;
+            template<typename InnerType>
+            struct TypeContainer : AbstractTypeContainer {
+                TypeContainer() = default;
 
-    template <typename InputType>
-    bool hasType() {
-        auto test = typeid(InputType).hash_code();
-        if (typeHashCode == test) {
-            return true;
-        }
-        return false;
+                ~TypeContainer() override = default;
+
+                explicit TypeContainer(InnerType value) : type(value) {}
+
+                InnerType type;
+
+                InnerType &getValue() {
+                    return type;
+                }
+            };
+
+            std::shared_ptr <AbstractTypeContainer> typeContainer;
+            size_t typeHashCode{};
+        public:
+            Variant() = default;
+
+            ~Variant() = default;
+
+            template<typename Type>
+            explicit Variant(Type value) {
+                typeContainer = std::make_shared<TypeContainer<Type>>(std::move(value));
+                typeHashCode = typeid(Type).hash_code();
+            }
+
+            Variant(Variant &&other) noexcept = default;
+
+            Variant(Variant const &other) = default;
+
+            template<typename InputType>
+            bool hasType() {
+                auto test = typeid(InputType).hash_code();
+                if (typeHashCode == test) {
+                    return true;
+                }
+                return false;
+            }
+
+            template<typename InputType>
+            InputType get() {
+                if (hasType<InputType>()) {
+                    return static_cast<TypeContainer<InputType> *>(typeContainer.get())->getValue();
+                }
+                throw std::logic_error("Types don't match!");
+            }
+        };
     }
+}
 
-    template <typename InputType>
-    InputType get() {
-        if (hasType<InputType>()) {
-            return static_cast<TypeContainer<InputType>*>(typeContainer.get())->getValue();
-        }
-        throw std::logic_error("Types don't match!");
-    }
-};
+
